@@ -111,12 +111,40 @@
       .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
   }
 
+  function formatPhone(value) {
+    const digits = onlyDigits(value).replace(/^55/, '').slice(0, 11);
+    if (digits.length === 0) return '';
+
+    const ddd = digits.slice(0, 2);
+    const first = digits.slice(2, 3);
+    const middle = digits.slice(3, 7);
+    const last = digits.slice(7, 11);
+
+    let formatted = '+55';
+    if (ddd) formatted += ` (${ddd}`;
+    if (ddd.length === 2) formatted += ')';
+    if (first) formatted += ` ${first}`;
+    if (middle) formatted += ` ${middle}`;
+    if (last) formatted += `-${last}`;
+
+    return formatted;
+  }
+
   function setupCpfMask() {
     const input = document.getElementById('cpf');
     if (!input) return;
 
     input.addEventListener('input', () => {
       input.value = formatCpf(input.value);
+    });
+  }
+
+  function setupPhoneMask() {
+    const input = document.getElementById('telefone');
+    if (!input) return;
+
+    input.addEventListener('input', () => {
+      input.value = formatPhone(input.value);
     });
   }
 
@@ -361,6 +389,7 @@
     const fileInput = form.querySelector('#arquivo');
     const file = fileInput && fileInput.files ? fileInput.files[0] : null;
     const cpf = onlyDigits(data.get('cpf'));
+    const telefone = formatPhone(data.get('telefone'));
 
     if (!file || !file.name) {
       alert('Selecione um arquivo de currículo antes de enviar.');
@@ -369,6 +398,11 @@
 
     if (cpf.length !== 11) {
       alert('Informe um CPF válido com 11 números.');
+      return;
+    }
+
+    if (onlyDigits(telefone).length !== 13) {
+      alert('Informe o telefone no formato +55 (xx) 9 XXXX-XXXX.');
       return;
     }
 
@@ -395,7 +429,7 @@
       const insert = await db.from('curriculos').insert({
         nome: data.get('nome'),
         cpf,
-        telefone: data.get('telefone'),
+        telefone,
         email: data.get('email'),
         arquivo_url: filePath
       });
@@ -549,12 +583,12 @@
       .order('created_at', { ascending: false });
 
     if (error) {
-      tbody.innerHTML = `<tr><td colspan="6" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
       return;
     }
 
     if (!data || data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" class="empty-row">Nenhum currículo recebido.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="empty-row">Nenhum currículo recebido.</td></tr>';
       return;
     }
 
@@ -567,8 +601,9 @@
           <td>${escapeHtml(item.nome)}</td>
           <td>${escapeHtml(formatCpf(item.cpf))}</td>
           <td>${escapeHtml(item.email)}</td>
-          <td>${escapeHtml(item.telefone)}</td>
+          <td>${escapeHtml(formatPhone(item.telefone))}</td>
           <td><a href="${fileUrl}" class="btn-download" target="_blank" rel="noopener">Baixar</a></td>
+          <td><button type="button" class="btn-danger" onclick="deleteCurriculo(${item.id}, '${encodeURIComponent(item.arquivo_url || item.arquivo || '')}')">Excluir</button></td>
         </tr>
       `;
     }).join('');
@@ -715,6 +750,31 @@
     loadAdminData();
   };
 
+  window.deleteCurriculo = async function deleteCurriculo(id, encodedFilePath) {
+    if (!db) return;
+
+    const firstConfirm = confirm('Tem certeza que deseja excluir este currículo?');
+    if (!firstConfirm) return;
+
+    const secondConfirm = confirm('Confirma novamente? Esta ação apagará o currículo do painel e não poderá ser desfeita.');
+    if (!secondConfirm) return;
+
+    const filePath = decodeURIComponent(encodedFilePath || '');
+
+    const { error } = await db.from('curriculos').delete().eq('id', id);
+    if (error) {
+      alert(`Não foi possível excluir o currículo: ${error.message}`);
+      return;
+    }
+
+    if (filePath && !/^https?:\/\//i.test(filePath)) {
+      await db.storage.from('curriculos').remove([filePath]);
+    }
+
+    alert('Currículo excluído com sucesso.');
+    loadAdminData();
+  };
+
   window.openEditModal = function(id) {
     const project = window.adminPortfolioData?.find(p => p.id === id);
     if (!project) return;
@@ -818,6 +878,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     setupCpfMask();
+    setupPhoneMask();
     setupForms();
     setupPortfolioFilters();
     loadPortfolioHighlights();
