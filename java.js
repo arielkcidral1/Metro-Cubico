@@ -99,6 +99,27 @@
     return new Intl.DateTimeFormat('pt-BR').format(new Date(value));
   }
 
+  function onlyDigits(value) {
+    return String(value || '').replace(/\D/g, '');
+  }
+
+  function formatCpf(value) {
+    const digits = onlyDigits(value).slice(0, 11);
+    return digits
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  }
+
+  function setupCpfMask() {
+    const input = document.getElementById('cpf');
+    if (!input) return;
+
+    input.addEventListener('input', () => {
+      input.value = formatCpf(input.value);
+    });
+  }
+
   function escapeHtml(value) {
     return String(value || '').replace(/[&<>"']/g, (char) => ({
       '&': '&amp;',
@@ -339,9 +360,15 @@
     const data = new FormData(form);
     const fileInput = form.querySelector('#arquivo');
     const file = fileInput && fileInput.files ? fileInput.files[0] : null;
+    const cpf = onlyDigits(data.get('cpf'));
 
     if (!file || !file.name) {
       alert('Selecione um arquivo de currículo antes de enviar.');
+      return;
+    }
+
+    if (cpf.length !== 11) {
+      alert('Informe um CPF válido com 11 números.');
       return;
     }
 
@@ -349,12 +376,25 @@
     button.textContent = 'Enviando...';
 
     try {
+      const existing = await db
+        .from('curriculos')
+        .select('id')
+        .eq('cpf', cpf)
+        .maybeSingle();
+
+      if (existing.error) throw existing.error;
+      if (existing.data) {
+        alert('Já existe um currículo enviado para este CPF.');
+        return;
+      }
+
       const filePath = `${Date.now()}-${safeStorageFileName(file.name, 'curriculo')}`;
       const upload = await db.storage.from('curriculos').upload(filePath, file);
       if (upload.error) throw upload.error;
 
       const insert = await db.from('curriculos').insert({
         nome: data.get('nome'),
+        cpf,
         telefone: data.get('telefone'),
         email: data.get('email'),
         arquivo_url: filePath
@@ -364,7 +404,11 @@
       alert('Obrigado! Seu currículo foi recebido.');
       form.reset();
     } catch (error) {
-      alert(`Não foi possível enviar o currículo: ${error.message}`);
+      if (error.code === '23505') {
+        alert('Já existe um currículo enviado para este CPF.');
+      } else {
+        alert(`Não foi possível enviar o currículo: ${error.message}`);
+      }
     } finally {
       button.disabled = false;
       button.textContent = 'Enviar Currículo';
@@ -378,7 +422,7 @@
     const password = document.getElementById('login-pass').value;
     const errorBox = document.getElementById('login-error');
 
-    if (user.toLowerCase() === 'alexandre' && password === 'Metro123') {
+    if (user.toLowerCase() === 'alexandre' && (password === 'Metro123' || password === 'metro123')) {
       if (errorBox) errorBox.style.display = 'none';
       document.getElementById('login-overlay').style.display = 'none';
       loadAdminData();
@@ -505,12 +549,12 @@
       .order('created_at', { ascending: false });
 
     if (error) {
-      tbody.innerHTML = `<tr><td colspan="5" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
       return;
     }
 
     if (!data || data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" class="empty-row">Nenhum currículo recebido.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="empty-row">Nenhum currículo recebido.</td></tr>';
       return;
     }
 
@@ -521,6 +565,7 @@
         <tr>
           <td>${formatDate(item.created_at)}</td>
           <td>${escapeHtml(item.nome)}</td>
+          <td>${escapeHtml(formatCpf(item.cpf))}</td>
           <td>${escapeHtml(item.email)}</td>
           <td>${escapeHtml(item.telefone)}</td>
           <td><a href="${fileUrl}" class="btn-download" target="_blank" rel="noopener">Baixar</a></td>
@@ -772,6 +817,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    setupCpfMask();
     setupForms();
     setupPortfolioFilters();
     loadPortfolioHighlights();
