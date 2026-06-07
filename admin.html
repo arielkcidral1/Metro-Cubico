@@ -40,6 +40,7 @@
     .admin-table tr:hover { background-color: #fdfdfd; }
     .btn-download { display: inline-flex; align-items: center; gap: 6px; background: #e6f0eb; color: #0b3b2a; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 0.85rem; }
     .btn-download:hover { background: #d0e4d9; }
+    .empty-row { color: #777; text-align: center; }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -125,9 +126,9 @@
       </div>
     </div>
     
-    <!-- ABA: ADICIONAR PORTFÓLIO -->
+    <!-- ABA: PORTFÓLIO -->
     <section id="portfolio" class="admin-section active">
-      <h3>Adicionar Projeto ao Portfólio</h3>
+      <h3>Cadastrar Projeto no Portfólio</h3>
       <form class="admin-form" data-form="admin-portfolio">
         <div class="form-row">
           <div class="field">
@@ -145,10 +146,6 @@
             </select>
           </div>
         </div>
-        <div class="field">
-          <label for="imagem_projeto">Upload da Foto</label>
-          <input type="file" id="imagem_projeto" name="imagem_projeto" accept="image/*" required />
-        </div>
         <button type="submit" class="btn btn-primary">Adicionar Projeto</button>
       </form>
 
@@ -159,7 +156,9 @@
         <div class="form-row">
           <div class="field">
             <label for="projeto_foto">Projeto</label>
-            <select id="projeto_foto" name="projeto_foto" required></select>
+            <select id="projeto_foto" name="projeto_foto" required>
+              <option value="">Selecione um projeto...</option>
+            </select>
           </div>
           <div class="field">
             <label for="imagens_projeto">Fotos</label>
@@ -201,21 +200,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Dados fictícios que o BD irá preencher -->
-          <tr>
-            <td>14/05/2026</td>
-            <td>João da Silva</td>
-            <td>joao.silva@email.com</td>
-            <td>(47) 98888-7777</td>
-            <td><a href="#" class="btn-download">↓ Baixar PDF</a></td>
-          </tr>
-          <tr>
-            <td>12/05/2026</td>
-            <td>Maria Fernanda</td>
-            <td>maria.f@email.com</td>
-            <td>(47) 99999-1111</td>
-            <td><a href="#" class="btn-download">↓ Baixar DOC</a></td>
-          </tr>
+          <tr><td colspan="5" class="empty-row">Nenhum currículo recebido.</td></tr>
         </tbody>
       </table>
     </section>
@@ -223,15 +208,15 @@
     <!-- ABA: ADICIONAR AVALIAÇÕES -->
     <section id="avaliacoes" class="admin-section">
       <h3>Adicionar Nova Avaliação</h3>
-      <form class="admin-form" onsubmit="event.preventDefault(); alert('Avaliação adicionada com sucesso! (Integração futura com BD)'); this.reset();">
+      <form class="admin-form" data-form="admin-avaliacao">
         <div class="form-row">
           <div class="field">
             <label for="nome_comentador">Nome do Avaliador</label>
-            <input type="text" id="nome_comentador" name="nome_comentador" placeholder="Ex: Laerte Joenck" required />
+            <input type="text" id="nome_comentador" name="nome_comentador" placeholder="Nome do cliente" required />
           </div>
           <div class="field">
             <label for="instituicao_comentador">Instituição / Empresa</label>
-            <input type="text" id="instituicao_comentador" name="instituicao_comentador" placeholder="Ex: Unisociesc" required />
+            <input type="text" id="instituicao_comentador" name="instituicao_comentador" placeholder="Empresa ou instituição" required />
           </div>
         </div>
         <div class="field">
@@ -240,30 +225,28 @@
         </div>
         <button type="submit" class="btn btn-primary">Adicionar Avaliação</button>
       </form>
+      <h3 style="margin-top: 36px;">Avaliações Cadastradas</h3>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Nome</th>
+            <th>Empresa</th>
+            <th>Comentário</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody id="admin-avaliacoes-list">
+          <tr><td colspan="5" class="empty-row">Nenhuma avaliação cadastrada.</td></tr>
+        </tbody>
+      </table>
     </section>
 
   </main>
 
-  <script>
-    function showTab(tabId) {
-      document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      event.currentTarget.classList.add('active');
-    }
-
-    // Validação de Login Simulada
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const user = document.getElementById('login-user').value;
-      const pass = document.getElementById('login-pass').value;
-      
-      if ((user === 'Alexandre' || user === 'alexandre') && (pass === 'Metro123' || pass === 'metro123')) {
-        document.getElementById('login-overlay').style.display = 'none';
-      } else {
-        document.getElementById('login-error').style.display = 'block';
-      }
-    });
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-lib.js"></script>
+  <script src="supabase.js"></script>
+  <script src="java.js"></script>
 </body>
 </html>

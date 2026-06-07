@@ -109,6 +109,19 @@
     })[char]);
   }
 
+  function safeStorageFileName(fileName, fallback = 'arquivo') {
+    const rawName = fileName || fallback;
+    const extension = rawName.includes('.') ? rawName.split('.').pop().toLowerCase() : '';
+    const baseName = rawName
+      .replace(/\.[^.]+$/, '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\w.-]+/g, '-')
+      .replace(/^-+|-+$/g, '') || fallback;
+
+    return extension ? `${baseName}.${extension}` : baseName;
+  }
+
   function getProjectPhotos(project) {
     const photos = [...(project.portfolio_fotos || [])].sort((a, b) => {
       return new Date(a.created_at || 0) - new Date(b.created_at || 0);
@@ -336,14 +349,7 @@
     button.textContent = 'Enviando...';
 
     try {
-      const extension = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : 'pdf';
-      const baseName = file.name
-        .replace(/\.[^.]+$/, '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^\w.-]+/g, '-')
-        .replace(/^-+|-+$/g, '') || 'curriculo';
-      const filePath = `${Date.now()}-${baseName}.${extension}`;
+      const filePath = `${Date.now()}-${safeStorageFileName(file.name, 'curriculo')}`;
       const upload = await db.storage.from('curriculos').upload(filePath, file);
       if (upload.error) throw upload.error;
 
@@ -437,7 +443,7 @@
       const rows = [];
 
       for (const file of files) {
-        const safeName = file.name.replace(/[^\w.-]+/g, '-');
+        const safeName = safeStorageFileName(file.name, 'foto');
         const filePath = `${projectId}/${Date.now()}-${Math.random().toString(36).slice(2)}-${safeName}`;
         const upload = await db.storage.from('portfolio').upload(filePath, file);
         if (upload.error) throw upload.error;
@@ -539,6 +545,7 @@
 
     if (!data || data.length === 0) {
       tbody.innerHTML = '<tr><td colspan="5" class="empty-row">Nenhum projeto cadastrado.</td></tr>';
+      window.adminPortfolioData = [];
       return;
     }
 
@@ -581,6 +588,11 @@
     if (error) return;
 
     select.innerHTML = '<option value="">Selecione um projeto...</option>';
+    if (!data || data.length === 0) {
+      select.innerHTML = '<option value="">Cadastre um projeto primeiro</option>';
+      return;
+    }
+
     (data || []).forEach((item) => {
       const option = document.createElement('option');
       option.value = item.id;
@@ -682,7 +694,7 @@
         photosGrid.innerHTML += `
           <div class="photo-edit-item">
             <img src="${url}" alt="Foto">
-            <button type="button" title="Apagar Foto" onclick="deleteProjectPhoto(${photo.id}, '${photo.imagem_url}', ${project.id})">X</button>
+            <button type="button" title="Apagar Foto" onclick="deleteProjectPhoto(${photo.id}, '${encodeURIComponent(photo.imagem_url)}', ${project.id})">X</button>
           </div>
         `;
       });
@@ -695,8 +707,9 @@
     document.getElementById('edit-modal').style.display = 'none';
   };
 
-  window.deleteProjectPhoto = async function(photoId, photoPath, projectId) {
+  window.deleteProjectPhoto = async function(photoId, encodedPhotoPath, projectId) {
     if (!db || !confirm('Tem certeza que deseja apagar esta foto do projeto?')) return;
+    const photoPath = decodeURIComponent(encodedPhotoPath || '');
     
     if (photoPath && !/^https?:\/\//i.test(photoPath)) {
       await db.storage.from('portfolio').remove([photoPath]);
@@ -710,7 +723,9 @@
     
     alert('Foto apagada com sucesso!');
     await loadAdminData();
-    openEditModal(projectId);
+    if (document.getElementById('edit-modal').style.display === 'flex') {
+      openEditModal(projectId);
+    }
   };
 
   async function handleEditProjectSubmit(event) {
