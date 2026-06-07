@@ -40,7 +40,7 @@
           </div>
         </div>
         
-        <form class="form" onsubmit="event.preventDefault(); alert('Obrigado! Seu currículo foi recebido e entraremos em contato se houver oportunidades.');">
+        <form class="form" data-form="curriculo">
           <div class="field">
             <label for="nome">Nome Completo</label>
             <input id="nome" name="nome" type="text" placeholder="Digite seu nome completo" required />
@@ -66,5 +66,8 @@
       </div>
     </section>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="java.js"></script>
 </body>
 </html>
