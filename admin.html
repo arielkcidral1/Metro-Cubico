@@ -40,11 +40,22 @@
     .admin-table tr:hover { background-color: #fdfdfd; }
     .btn-download { display: inline-flex; align-items: center; gap: 6px; background: #e6f0eb; color: #0b3b2a; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 0.85rem; }
     .btn-download:hover { background: #d0e4d9; }
-    .btn-danger { display: inline-flex; align-items: center; gap: 6px; background: #fde8e8; color: #b42318; padding: 6px 12px; border: none; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
-    .btn-danger:hover { background: #fbd5d5; }
-    .empty-row { color: #777; text-align: center; }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .btn-danger { background: #fee2e2; color: #b91c1c; padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; font-size: 0.85rem; }
+    .btn-danger:hover { background: #fca5a5; }
+    .btn-edit { background: #e0f2fe; color: #0284c7; padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; font-size: 0.85rem; margin-right: 8px; }
+    .btn-edit:hover { background: #bae6fd; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 59, 42, 0.8); display: none; align-items: center; justify-content: center; z-index: 10000; }
+    .modal-box { background: #fff; padding: 32px; border-radius: 12px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
+    .modal-box h3 { margin-top: 0; color: #0b3b2a; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
+    .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666; }
+    .photo-edit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; margin-top: 16px; }
+    .photo-edit-item { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid #eee; height: 100px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; }
+    .photo-edit-item img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-edit-item button { position: absolute; top: 4px; right: 4px; background: rgba(220, 38, 38, 0.9); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
+    .photo-edit-item button:hover { background: #b91c1c; }
 
     /* Tela de Login */
     .login-overlay {
@@ -89,10 +100,34 @@
   </aside>
 
   <main class="main-content">
+
+    <!-- TELA (MODAL) DE EDIÇÃO DO PROJETO -->
+    <div id="edit-modal" class="modal-overlay">
+      <div class="modal-box">
+        <h3>Editar Projeto <button type="button" class="modal-close" onclick="closeEditModal()">×</button></h3>
+        <form id="edit-project-form" class="admin-form">
+          <input type="hidden" id="edit_projeto_id">
+          <div class="form-row">
+            <div class="field"><label>Título</label><input type="text" id="edit_titulo" required></div>
+            <div class="field"><label>Categoria</label>
+              <select id="edit_categoria" required>
+                <option value="Limpeza">Limpeza Corporativa</option>
+                <option value="Jardinagem">Jardinagem</option>
+                <option value="Paisagismo">Paisagismo</option>
+                <option value="Facilities">Facilities</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar Alterações</button>
+        </form>
+        <h4 style="margin-top: 30px; margin-bottom: 10px; color: #0b3b2a;">Fotos do Projeto</h4>
+        <div id="edit-photos-list" class="photo-edit-grid"></div>
+      </div>
+    </div>
     
-    <!-- ABA: PORTFÓLIO -->
+    <!-- ABA: ADICIONAR PORTFÓLIO -->
     <section id="portfolio" class="admin-section active">
-      <h3>Cadastrar Projeto no Portfólio</h3>
+      <h3>Adicionar Projeto ao Portfólio</h3>
       <form class="admin-form" data-form="admin-portfolio">
         <div class="form-row">
           <div class="field">
@@ -110,25 +145,33 @@
             </select>
           </div>
         </div>
+        <div class="field">
+          <label for="imagem_projeto">Upload da Foto</label>
+          <input type="file" id="imagem_projeto" name="imagem_projeto" accept="image/*" required />
+        </div>
         <button type="submit" class="btn btn-primary">Adicionar Projeto</button>
       </form>
 
-      <h3 style="margin-top: 36px;">Cadastrar Fotos ao Projeto</h3>
+      <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+      
+      <h3>Adicionar Fotos a Projetos Existentes</h3>
       <form class="admin-form" data-form="admin-portfolio-fotos">
-        <div class="field">
-          <label for="projeto_foto">Projeto</label>
-          <select id="projeto_foto" name="projeto_foto" required>
-            <option value="">Selecione um projeto...</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="imagens_projeto">Fotos do Projeto</label>
-          <input type="file" id="imagens_projeto" name="imagens_projeto" accept="image/*" multiple required />
+        <div class="form-row">
+          <div class="field">
+            <label for="projeto_foto">Projeto</label>
+            <select id="projeto_foto" name="projeto_foto" required></select>
+          </div>
+          <div class="field">
+            <label for="imagens_projeto">Fotos</label>
+            <input type="file" id="imagens_projeto" name="imagens_projeto" accept="image/*" multiple required />
+          </div>
         </div>
         <button type="submit" class="btn btn-primary">Adicionar Fotos</button>
       </form>
 
-      <h3 style="margin-top: 36px;">Projetos Cadastrados</h3>
+      <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+      
+      <h3>Projetos Cadastrados</h3>
       <table class="admin-table">
         <thead>
           <tr>
@@ -136,12 +179,10 @@
             <th>Título</th>
             <th>Categoria</th>
             <th>Fotos</th>
-            <th>Ação</th>
+            <th>Ações</th>
           </tr>
         </thead>
-        <tbody id="admin-portfolio-list">
-          <tr><td colspan="5" class="empty-row">Nenhum projeto cadastrado.</td></tr>
-        </tbody>
+        <tbody id="admin-portfolio-list"></tbody>
       </table>
     </section>
 
@@ -160,7 +201,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td colspan="5" class="empty-row">Nenhum currículo recebido.</td></tr>
+          <!-- Dados fictícios que o BD irá preencher -->
+          <tr>
+            <td>14/05/2026</td>
+            <td>João da Silva</td>
+            <td>joao.silva@email.com</td>
+            <td>(47) 98888-7777</td>
+            <td><a href="#" class="btn-download">↓ Baixar PDF</a></td>
+          </tr>
+          <tr>
+            <td>12/05/2026</td>
+            <td>Maria Fernanda</td>
+            <td>maria.f@email.com</td>
+            <td>(47) 99999-1111</td>
+            <td><a href="#" class="btn-download">↓ Baixar DOC</a></td>
+          </tr>
         </tbody>
       </table>
     </section>
@@ -168,15 +223,15 @@
     <!-- ABA: ADICIONAR AVALIAÇÕES -->
     <section id="avaliacoes" class="admin-section">
       <h3>Adicionar Nova Avaliação</h3>
-      <form class="admin-form" data-form="admin-avaliacao">
+      <form class="admin-form" onsubmit="event.preventDefault(); alert('Avaliação adicionada com sucesso! (Integração futura com BD)'); this.reset();">
         <div class="form-row">
           <div class="field">
             <label for="nome_comentador">Nome do Avaliador</label>
-            <input type="text" id="nome_comentador" name="nome_comentador" placeholder="Nome do cliente" required />
+            <input type="text" id="nome_comentador" name="nome_comentador" placeholder="Ex: Laerte Joenck" required />
           </div>
           <div class="field">
             <label for="instituicao_comentador">Instituição / Empresa</label>
-            <input type="text" id="instituicao_comentador" name="instituicao_comentador" placeholder="Empresa ou instituição" required />
+            <input type="text" id="instituicao_comentador" name="instituicao_comentador" placeholder="Ex: Unisociesc" required />
           </div>
         </div>
         <div class="field">
@@ -185,28 +240,30 @@
         </div>
         <button type="submit" class="btn btn-primary">Adicionar Avaliação</button>
       </form>
-      <h3 style="margin-top: 36px;">Avaliações Cadastradas</h3>
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Nome</th>
-            <th>Empresa</th>
-            <th>Comentário</th>
-            <th>Ação</th>
-          </tr>
-        </thead>
-        <tbody id="admin-avaliacoes-list">
-          <tr><td colspan="5" class="empty-row">Nenhuma avaliação cadastrada.</td></tr>
-        </tbody>
-      </table>
     </section>
 
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-lib.js"></script>
-  <script src="supabase.js"></script>
-  <script src="java.js"></script>
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    // Validação de Login Simulada
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = document.getElementById('login-user').value;
+      const pass = document.getElementById('login-pass').value;
+      
+      if ((user === 'Alexandre' || user === 'alexandre') && (pass === 'Metro123' || pass === 'metro123')) {
+        document.getElementById('login-overlay').style.display = 'none';
+      } else {
+        document.getElementById('login-error').style.display = 'block';
+      }
+    });
+  </script>
 </body>
 </html>
