@@ -112,8 +112,12 @@
   }
 
   function formatPhone(value) {
-    const digits = onlyDigits(value).replace(/^55/, '').slice(0, 11);
-    if (digits.length === 0) return '';
+    let digits = onlyDigits(value);
+    if (digits.length > 11 && digits.startsWith('55')) {
+      digits = digits.slice(2);
+    }
+    digits = digits.slice(0, 11);
+    if (digits.length === 0) return '+55 ';
 
     const ddd = digits.slice(0, 2);
     const first = digits.slice(2, 3);
@@ -145,6 +149,10 @@
 
     input.addEventListener('input', () => {
       input.value = formatPhone(input.value);
+    });
+
+    input.addEventListener('focus', () => {
+      if (!input.value.trim()) input.value = '+55 ';
     });
   }
 
