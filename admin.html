@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel Administrativo | Metro Cúbico</title>
+  <title>Painel Administrativo | Metro CÃºbico</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,6 +40,9 @@
     .admin-table tr:hover { background-color: #fdfdfd; }
     .btn-download { display: inline-flex; align-items: center; gap: 6px; background: #e6f0eb; color: #0b3b2a; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 0.85rem; }
     .btn-download:hover { background: #d0e4d9; }
+    .btn-danger { display: inline-flex; align-items: center; gap: 6px; background: #fde8e8; color: #b42318; padding: 6px 12px; border: none; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+    .btn-danger:hover { background: #fbd5d5; }
+    .empty-row { color: #777; text-align: center; }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -69,31 +72,31 @@
     <div class="login-box">
       <h2>Acesso Restrito</h2>
       <form id="login-form">
-        <div class="field"><label for="login-user">Usuário</label><input type="text" id="login-user" required></div>
+        <div class="field"><label for="login-user">UsuÃ¡rio</label><input type="text" id="login-user" required></div>
         <div class="field"><label for="login-pass">Senha</label><input type="password" id="login-pass" required></div>
         <button type="submit">Entrar no Painel</button>
-        <div id="login-error" class="login-error">Usuário ou senha incorretos.</div>
+        <div id="login-error" class="login-error">UsuÃ¡rio ou senha incorretos.</div>
       </form>
     </div>
   </div>
 
   <aside class="sidebar">
     <h2>Painel Admin</h2>
-    <button class="nav-btn active" onclick="showTab('portfolio')">Fotos do Portfólio</button>
-    <button class="nav-btn" onclick="showTab('curriculos')">Consultar Currículos</button>
-    <button class="nav-btn" onclick="showTab('avaliacoes')">Gerenciar Avaliações</button>
+    <button class="nav-btn active" onclick="showTab('portfolio')">Fotos do PortfÃ³lio</button>
+    <button class="nav-btn" onclick="showTab('curriculos')">Consultar CurrÃ­culos</button>
+    <button class="nav-btn" onclick="showTab('avaliacoes')">Gerenciar AvaliaÃ§Ãµes</button>
     <a href="index.html" class="nav-btn logout-btn" style="text-decoration: none; display: block;">Voltar ao Site</a>
   </aside>
 
   <main class="main-content">
     
-    <!-- ABA: ADICIONAR PORTFÓLIO -->
+    <!-- ABA: ADICIONAR PORTFÃ“LIO -->
     <section id="portfolio" class="admin-section active">
-      <h3>Adicionar Projeto ao Portfólio</h3>
+      <h3>Adicionar Projeto ao PortfÃ³lio</h3>
       <form class="admin-form" data-form="admin-portfolio">
         <div class="form-row">
           <div class="field">
-            <label for="titulo_projeto">Título do Projeto</label>
+            <label for="titulo_projeto">TÃ­tulo do Projeto</label>
             <input type="text" id="titulo_projeto" name="titulo_projeto" placeholder="Ex: Jardim Corporativo XYZ" required />
           </div>
           <div class="field">
@@ -113,12 +116,27 @@
         </div>
         <button type="submit" class="btn btn-primary">Adicionar Projeto</button>
       </form>
+      <h3 style="margin-top: 36px;">Projetos Cadastrados</h3>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>TÃ­tulo</th>
+            <th>Categoria</th>
+            <th>Foto</th>
+            <th>AÃ§Ã£o</th>
+          </tr>
+        </thead>
+        <tbody id="admin-portfolio-list">
+          <tr><td colspan="5" class="empty-row">Nenhum projeto cadastrado.</td></tr>
+        </tbody>
+      </table>
     </section>
 
-    <!-- ABA: CONSULTAR CURRÍCULOS -->
+    <!-- ABA: CONSULTAR CURRÃCULOS -->
     <section id="curriculos" class="admin-section">
-      <h3>Currículos Recebidos</h3>
-      <p style="color: #666; margin-bottom: 20px;">Lista de candidatos que enviaram currículo pela página "Trabalhe Conosco".</p>
+      <h3>CurrÃ­culos Recebidos</h3>
+      <p style="color: #666; margin-bottom: 20px;">Lista de candidatos que enviaram currÃ­culo pela pÃ¡gina "Trabalhe Conosco".</p>
       <table class="admin-table">
         <thead>
           <tr>
@@ -130,50 +148,52 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Dados fictícios que o BD irá preencher -->
-          <tr>
-            <td>14/05/2026</td>
-            <td>João da Silva</td>
-            <td>joao.silva@email.com</td>
-            <td>(47) 98888-7777</td>
-            <td><a href="#" class="btn-download">↓ Baixar PDF</a></td>
-          </tr>
-          <tr>
-            <td>12/05/2026</td>
-            <td>Maria Fernanda</td>
-            <td>maria.f@email.com</td>
-            <td>(47) 99999-1111</td>
-            <td><a href="#" class="btn-download">↓ Baixar DOC</a></td>
-          </tr>
+          <tr><td colspan="5" class="empty-row">Nenhum currículo recebido.</td></tr>
         </tbody>
       </table>
     </section>
 
-    <!-- ABA: ADICIONAR AVALIAÇÕES -->
+    <!-- ABA: ADICIONAR AVALIAÃ‡Ã•ES -->
     <section id="avaliacoes" class="admin-section">
-      <h3>Adicionar Nova Avaliação</h3>
+      <h3>Adicionar Nova AvaliaÃ§Ã£o</h3>
       <form class="admin-form" data-form="admin-avaliacao">
         <div class="form-row">
           <div class="field">
             <label for="nome_comentador">Nome do Avaliador</label>
-            <input type="text" id="nome_comentador" name="nome_comentador" placeholder="Ex: Laerte Joenck" required />
+            <input type="text" id="nome_comentador" name="nome_comentador" placeholder="Nome do cliente" required />
           </div>
           <div class="field">
-            <label for="instituicao_comentador">Instituição / Empresa</label>
-            <input type="text" id="instituicao_comentador" name="instituicao_comentador" placeholder="Ex: Unisociesc" required />
+            <label for="instituicao_comentador">InstituiÃ§Ã£o / Empresa</label>
+            <input type="text" id="instituicao_comentador" name="instituicao_comentador" placeholder="Empresa ou instituição" required />
           </div>
         </div>
         <div class="field">
-          <label for="comentario_avaliacao">Comentário</label>
+          <label for="comentario_avaliacao">ComentÃ¡rio</label>
           <textarea id="comentario_avaliacao" name="comentario_avaliacao" placeholder="Escreva o depoimento do cliente..." required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Adicionar Avaliação</button>
+        <button type="submit" class="btn btn-primary">Adicionar AvaliaÃ§Ã£o</button>
       </form>
+      <h3 style="margin-top: 36px;">AvaliaÃ§Ãµes Cadastradas</h3>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Nome</th>
+            <th>Empresa</th>
+            <th>ComentÃ¡rio</th>
+            <th>AÃ§Ã£o</th>
+          </tr>
+        </thead>
+        <tbody id="admin-avaliacoes-list">
+          <tr><td colspan="5" class="empty-row">Nenhuma avaliaÃ§Ã£o cadastrada.</td></tr>
+        </tbody>
+      </table>
     </section>
 
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-lib.js"></script>
   <script src="supabase.js"></script>
   <script src="java.js"></script>
 </body>

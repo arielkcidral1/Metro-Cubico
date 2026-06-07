@@ -1,5 +1,5 @@
 (function () {
-  const db = typeof supabase !== 'undefined' ? supabase : null;
+  const db = window.metroSupabase || null;
 
   const header = document.getElementById('header');
   const mobileMenu = document.getElementById('mobileMenu');
@@ -99,6 +99,16 @@
     return new Intl.DateTimeFormat('pt-BR').format(new Date(value));
   }
 
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    })[char]);
+  }
+
   async function loadPortfolioHighlights() {
     const container = document.getElementById('dynamic-portfolio-highlights');
     if (!db || !container) return;
@@ -109,13 +119,16 @@
       .order('created_at', { ascending: false })
       .limit(5);
 
-    if (error || !data || data.length === 0) return;
+    if (error || !data || data.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
 
     container.innerHTML = data.map((item) => {
       const image = getPublicUrl('portfolio', item.imagem_url || item.imagem || item.image_path);
-      const title = item.titulo || item.titulo_projeto || 'Projeto';
-      const category = item.categoria || item.categoria_projeto || 'Portfólio';
-      const description = item.descricao || category;
+      const title = escapeHtml(item.titulo || item.titulo_projeto || 'Projeto');
+      const category = escapeHtml(item.categoria || item.categoria_projeto || 'Portfólio');
+      const description = escapeHtml(item.descricao || category);
 
       return `
         <article class="work reveal visible" style="background-image:url('${image}')">
@@ -134,12 +147,15 @@
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (error || !data || data.length === 0) return;
+    if (error || !data || data.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
 
     container.innerHTML = data.map((item) => {
       const image = getPublicUrl('portfolio', item.imagem_url || item.imagem || item.image_path);
-      const title = item.titulo || item.titulo_projeto || 'Projeto';
-      const category = item.categoria || item.categoria_projeto || 'Portfólio';
+      const title = escapeHtml(item.titulo || item.titulo_projeto || 'Projeto');
+      const category = escapeHtml(item.categoria || item.categoria_projeto || 'Portfólio');
 
       return `
         <article class="work portfolio-item reveal visible" data-category="${category}" style="background-image:url('${image}')">
@@ -161,12 +177,15 @@
       .order('created_at', { ascending: false })
       .limit(6);
 
-    if (error || !data || data.length === 0) return;
+    if (error || !data || data.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
 
     container.innerHTML = data.map((item) => {
-      const name = item.nome || item.nome_comentador || 'Cliente';
-      const company = item.instituicao || item.instituicao_comentador || '';
-      const comment = item.comentario || item.comentario_avaliacao || '';
+      const name = escapeHtml(item.nome || item.nome_comentador || 'Cliente');
+      const company = escapeHtml(item.instituicao || item.instituicao_comentador || '');
+      const comment = escapeHtml(item.comentario || item.comentario_avaliacao || '');
 
       return `
         <div class="quote reveal visible">
@@ -248,13 +267,7 @@
 
   async function protectAdmin() {
     const overlay = document.getElementById('login-overlay');
-    if (!db || !overlay) return;
-
-    const { data } = await db.auth.getSession();
-    if (data.session) {
-      overlay.style.display = 'none';
-      loadAdminData();
-    }
+    if (overlay) overlay.style.display = 'flex';
   }
 
   window.showTab = function showTab(tabId) {
@@ -294,6 +307,7 @@
 
     alert('Projeto salvo com sucesso!');
     form.reset();
+    loadAdminData();
   }
 
   async function handleAdminReviewSubmit(event) {
@@ -315,33 +329,144 @@
 
     alert('Avaliação adicionada com sucesso!');
     form.reset();
+    loadAdminData();
   }
 
   async function loadAdminData() {
+    if (!db) return;
+    await Promise.all([
+      loadAdminCurriculos(),
+      loadAdminPortfolio(),
+      loadAdminAvaliacoes()
+    ]);
+  }
+
+  async function loadAdminCurriculos() {
     const tbody = document.querySelector('#curriculos tbody');
     if (!db || !tbody) return;
-
     const { data, error } = await db
       .from('curriculos')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (error) return;
+    if (error) {
+      tbody.innerHTML = `<tr><td colspan="5" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
+      return;
+    }
 
-    tbody.innerHTML = (data || []).map((item) => {
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty-row">Nenhum currículo recebido.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.map((item) => {
       const fileUrl = getPublicUrl('curriculos', item.arquivo_url || item.arquivo);
 
       return `
         <tr>
           <td>${formatDate(item.created_at)}</td>
-          <td>${item.nome || ''}</td>
-          <td>${item.email || ''}</td>
-          <td>${item.telefone || ''}</td>
+          <td>${escapeHtml(item.nome)}</td>
+          <td>${escapeHtml(item.email)}</td>
+          <td>${escapeHtml(item.telefone)}</td>
           <td><a href="${fileUrl}" class="btn-download" target="_blank" rel="noopener">Baixar</a></td>
         </tr>
       `;
     }).join('');
   }
+
+  async function loadAdminPortfolio() {
+    const tbody = document.getElementById('admin-portfolio-list');
+    if (!db || !tbody) return;
+
+    const { data, error } = await db
+      .from('portfolio')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      tbody.innerHTML = `<tr><td colspan="5" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty-row">Nenhum projeto cadastrado.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.map((item) => {
+      const filePath = item.imagem_url || item.imagem || item.image_path || '';
+      const fileUrl = getPublicUrl('portfolio', filePath);
+
+      return `
+        <tr>
+          <td>${formatDate(item.created_at)}</td>
+          <td>${escapeHtml(item.titulo)}</td>
+          <td>${escapeHtml(item.categoria)}</td>
+          <td><a href="${fileUrl}" class="btn-download" target="_blank" rel="noopener">Abrir</a></td>
+          <td><button type="button" class="btn-danger" onclick="deletePortfolioItem(${item.id}, '${encodeURIComponent(filePath)}')">Excluir</button></td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async function loadAdminAvaliacoes() {
+    const tbody = document.getElementById('admin-avaliacoes-list');
+    if (!db || !tbody) return;
+
+    const { data, error } = await db
+      .from('avaliacoes')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      tbody.innerHTML = `<tr><td colspan="5" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty-row">Nenhuma avaliação cadastrada.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.map((item) => `
+      <tr>
+        <td>${formatDate(item.created_at)}</td>
+        <td>${escapeHtml(item.nome)}</td>
+        <td>${escapeHtml(item.instituicao)}</td>
+        <td>${escapeHtml(item.comentario)}</td>
+        <td><button type="button" class="btn-danger" onclick="deleteAvaliacao(${item.id})">Excluir</button></td>
+      </tr>
+    `).join('');
+  }
+
+  window.deletePortfolioItem = async function deletePortfolioItem(id, encodedFilePath) {
+    if (!db || !confirm('Excluir este projeto?')) return;
+    const filePath = decodeURIComponent(encodedFilePath || '');
+
+    const { error } = await db.from('portfolio').delete().eq('id', id);
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    if (filePath && !/^https?:\/\//i.test(filePath)) {
+      await db.storage.from('portfolio').remove([filePath]);
+    }
+
+    loadAdminData();
+  };
+
+  window.deleteAvaliacao = async function deleteAvaliacao(id) {
+    if (!db || !confirm('Excluir esta avaliação?')) return;
+
+    const { error } = await db.from('avaliacoes').delete().eq('id', id);
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    loadAdminData();
+  };
 
   function setupForms() {
     const curriculoForm = document.querySelector('form[data-form="curriculo"]');
