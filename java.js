@@ -114,8 +114,8 @@
     if (!db || !container) return;
 
     const { data, error } = await db
-      .from('portfolio')
-      .select('*')
+      .from('portfolio_fotos')
+      .select('id, imagem_url, created_at, portfolio:projeto_id(id, titulo, categoria)')
       .order('created_at', { ascending: false })
       .limit(5);
 
@@ -125,9 +125,10 @@
     }
 
     container.innerHTML = data.map((item) => {
-      const image = getPublicUrl('portfolio', item.imagem_url || item.imagem || item.image_path);
-      const title = escapeHtml(item.titulo || item.titulo_projeto || 'Projeto');
-      const category = escapeHtml(item.categoria || item.categoria_projeto || 'Portfólio');
+      const project = item.portfolio || {};
+      const image = getPublicUrl('portfolio', item.imagem_url);
+      const title = escapeHtml(project.titulo || 'Projeto');
+      const category = escapeHtml(project.categoria || 'Portfólio');
       const description = escapeHtml(item.descricao || category);
 
       return `
@@ -143,8 +144,8 @@
     if (!db || !container) return;
 
     const { data, error } = await db
-      .from('portfolio')
-      .select('*')
+      .from('portfolio_fotos')
+      .select('id, imagem_url, created_at, portfolio:projeto_id(id, titulo, categoria)')
       .order('created_at', { ascending: false });
 
     if (error || !data || data.length === 0) {
@@ -153,9 +154,10 @@
     }
 
     container.innerHTML = data.map((item) => {
-      const image = getPublicUrl('portfolio', item.imagem_url || item.imagem || item.image_path);
-      const title = escapeHtml(item.titulo || item.titulo_projeto || 'Projeto');
-      const category = escapeHtml(item.categoria || item.categoria_projeto || 'Portfólio');
+      const project = item.portfolio || {};
+      const image = getPublicUrl('portfolio', item.imagem_url);
+      const title = escapeHtml(project.titulo || 'Projeto');
+      const category = escapeHtml(project.categoria || 'Portfólio');
 
       return `
         <article class="work portfolio-item reveal visible" data-category="${category}" style="background-image:url('${image}')">
@@ -285,19 +287,10 @@
 
     const form = event.target;
     const data = new FormData(form);
-    const file = data.get('imagem_projeto');
-    const filePath = `${Date.now()}-${file.name}`;
-
-    const upload = await db.storage.from('portfolio').upload(filePath, file);
-    if (upload.error) {
-      alert(upload.error.message);
-      return;
-    }
 
     const insert = await db.from('portfolio').insert({
       titulo: data.get('titulo_projeto'),
-      categoria: data.get('categoria_projeto'),
-      imagem_url: filePath
+      categoria: data.get('categoria_projeto')
     });
 
     if (insert.error) {
@@ -308,6 +301,46 @@
     alert('Projeto salvo com sucesso!');
     form.reset();
     loadAdminData();
+  }
+
+  async function handleAdminPortfolioFotosSubmit(event) {
+    event.preventDefault();
+    if (!db) return;
+
+    const form = event.target;
+    const button = form.querySelector('button[type="submit"]');
+    const data = new FormData(form);
+    const projectId = data.get('projeto_foto');
+    const files = Array.from(form.querySelector('#imagens_projeto').files || []);
+
+    if (!projectId || files.length === 0) return;
+
+    button.disabled = true;
+    button.textContent = 'Enviando fotos...';
+
+    try {
+      const rows = [];
+
+      for (const file of files) {
+        const safeName = file.name.replace(/[^\w.-]+/g, '-');
+        const filePath = `${projectId}/${Date.now()}-${Math.random().toString(36).slice(2)}-${safeName}`;
+        const upload = await db.storage.from('portfolio').upload(filePath, file);
+        if (upload.error) throw upload.error;
+        rows.push({ projeto_id: Number(projectId), imagem_url: filePath });
+      }
+
+      const insert = await db.from('portfolio_fotos').insert(rows);
+      if (insert.error) throw insert.error;
+
+      alert(`${files.length} foto(s) adicionada(s) com sucesso!`);
+      form.reset();
+      loadAdminData();
+    } catch (error) {
+      alert(`Não foi possível adicionar as fotos: ${error.message}`);
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Adicionar Fotos';
+    }
   }
 
   async function handleAdminReviewSubmit(event) {
@@ -337,6 +370,7 @@
     await Promise.all([
       loadAdminCurriculos(),
       loadAdminPortfolio(),
+      loadAdminProjetoOptions(),
       loadAdminAvaliacoes()
     ]);
   }
@@ -380,7 +414,7 @@
 
     const { data, error } = await db
       .from('portfolio')
-      .select('*')
+      .select('*, portfolio_fotos(id, imagem_url)')
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -394,19 +428,47 @@
     }
 
     tbody.innerHTML = data.map((item) => {
-      const filePath = item.imagem_url || item.imagem || item.image_path || '';
-      const fileUrl = getPublicUrl('portfolio', filePath);
+      const photos = item.portfolio_fotos || [];
+      const firstPhoto = photos[0]?.imagem_url || item.imagem_url || '';
+      const fileUrl = firstPhoto ? getPublicUrl('portfolio', firstPhoto) : '';
+      const photoLabel = photos.length === 1 ? '1 foto' : `${photos.length} fotos`;
+      const photoCell = fileUrl
+        ? `<a href="${fileUrl}" class="btn-download" target="_blank" rel="noopener">${photoLabel}</a>`
+        : photoLabel;
 
       return `
         <tr>
           <td>${formatDate(item.created_at)}</td>
           <td>${escapeHtml(item.titulo)}</td>
           <td>${escapeHtml(item.categoria)}</td>
-          <td><a href="${fileUrl}" class="btn-download" target="_blank" rel="noopener">Abrir</a></td>
-          <td><button type="button" class="btn-danger" onclick="deletePortfolioItem(${item.id}, '${encodeURIComponent(filePath)}')">Excluir</button></td>
+          <td>${photoCell}</td>
+          <td><button type="button" class="btn-danger" onclick="deletePortfolioItem(${item.id})">Excluir</button></td>
         </tr>
       `;
     }).join('');
+  }
+
+  async function loadAdminProjetoOptions() {
+    const select = document.getElementById('projeto_foto');
+    if (!db || !select) return;
+
+    const selected = select.value;
+    const { data, error } = await db
+      .from('portfolio')
+      .select('id, titulo, categoria')
+      .order('titulo', { ascending: true });
+
+    if (error) return;
+
+    select.innerHTML = '<option value="">Selecione um projeto...</option>';
+    (data || []).forEach((item) => {
+      const option = document.createElement('option');
+      option.value = item.id;
+      option.textContent = `${item.titulo} (${item.categoria})`;
+      select.appendChild(option);
+    });
+
+    if (selected) select.value = selected;
   }
 
   async function loadAdminAvaliacoes() {
@@ -439,9 +501,13 @@
     `).join('');
   }
 
-  window.deletePortfolioItem = async function deletePortfolioItem(id, encodedFilePath) {
+  window.deletePortfolioItem = async function deletePortfolioItem(id) {
     if (!db || !confirm('Excluir este projeto?')) return;
-    const filePath = decodeURIComponent(encodedFilePath || '');
+
+    const { data: photos } = await db
+      .from('portfolio_fotos')
+      .select('imagem_url')
+      .eq('projeto_id', id);
 
     const { error } = await db.from('portfolio').delete().eq('id', id);
     if (error) {
@@ -449,8 +515,12 @@
       return;
     }
 
-    if (filePath && !/^https?:\/\//i.test(filePath)) {
-      await db.storage.from('portfolio').remove([filePath]);
+    const files = (photos || [])
+      .map((photo) => photo.imagem_url)
+      .filter((path) => path && !/^https?:\/\//i.test(path));
+
+    if (files.length > 0) {
+      await db.storage.from('portfolio').remove(files);
     }
 
     loadAdminData();
@@ -477,6 +547,9 @@
 
     const portfolioForm = document.querySelector('form[data-form="admin-portfolio"]');
     if (portfolioForm) portfolioForm.addEventListener('submit', handleAdminPortfolioSubmit);
+
+    const portfolioFotosForm = document.querySelector('form[data-form="admin-portfolio-fotos"]');
+    if (portfolioFotosForm) portfolioFotosForm.addEventListener('submit', handleAdminPortfolioFotosSubmit);
 
     const reviewForm = document.querySelector('form[data-form="admin-avaliacao"]');
     if (reviewForm) reviewForm.addEventListener('submit', handleAdminReviewSubmit);

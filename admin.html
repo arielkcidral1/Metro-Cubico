@@ -90,9 +90,9 @@
 
   <main class="main-content">
     
-    <!-- ABA: ADICIONAR PORTFÓLIO -->
+    <!-- ABA: PORTFÓLIO -->
     <section id="portfolio" class="admin-section active">
-      <h3>Adicionar Projeto ao Portfólio</h3>
+      <h3>Cadastrar Projeto no Portfólio</h3>
       <form class="admin-form" data-form="admin-portfolio">
         <div class="form-row">
           <div class="field">
@@ -110,12 +110,24 @@
             </select>
           </div>
         </div>
-        <div class="field">
-          <label for="imagem_projeto">Upload da Foto</label>
-          <input type="file" id="imagem_projeto" name="imagem_projeto" accept="image/*" required />
-        </div>
         <button type="submit" class="btn btn-primary">Adicionar Projeto</button>
       </form>
+
+      <h3 style="margin-top: 36px;">Cadastrar Fotos ao Projeto</h3>
+      <form class="admin-form" data-form="admin-portfolio-fotos">
+        <div class="field">
+          <label for="projeto_foto">Projeto</label>
+          <select id="projeto_foto" name="projeto_foto" required>
+            <option value="">Selecione um projeto...</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="imagens_projeto">Fotos do Projeto</label>
+          <input type="file" id="imagens_projeto" name="imagens_projeto" accept="image/*" multiple required />
+        </div>
+        <button type="submit" class="btn btn-primary">Adicionar Fotos</button>
+      </form>
+
       <h3 style="margin-top: 36px;">Projetos Cadastrados</h3>
       <table class="admin-table">
         <thead>
@@ -123,7 +135,7 @@
             <th>Data</th>
             <th>Título</th>
             <th>Categoria</th>
-            <th>Foto</th>
+            <th>Fotos</th>
             <th>Ação</th>
           </tr>
         </thead>
