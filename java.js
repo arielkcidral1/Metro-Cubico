@@ -109,13 +109,47 @@
     })[char]);
   }
 
+  function getProjectPhotos(project) {
+    const photos = [...(project.portfolio_fotos || [])].sort((a, b) => {
+      return new Date(a.created_at || 0) - new Date(b.created_at || 0);
+    });
+
+    if (photos.length > 0) {
+      return photos.map((photo) => photo.imagem_url).filter(Boolean);
+    }
+
+    return [project.imagem_url || project.imagem || project.image_path].filter(Boolean);
+  }
+
+  function renderPortfolioCard(project, options = {}) {
+    const photos = getProjectPhotos(project);
+    if (photos.length === 0) return '';
+
+    const image = getPublicUrl('portfolio', photos[0]);
+    const title = escapeHtml(project.titulo || project.titulo_projeto || 'Projeto');
+    const category = escapeHtml(project.categoria || project.categoria_projeto || 'Portfólio');
+    const description = escapeHtml(project.descricao || category);
+    const photoCount = photos.length;
+    const albumBadge = photoCount > 1 ? `<span class="album-badge">${photoCount} fotos</span>` : '';
+    const itemClass = options.full ? 'work portfolio-item reveal visible' : 'work reveal visible';
+    const dataCategory = options.full ? ` data-category="${category}"` : '';
+    const clickAction = ` onclick="openPortfolioAlbum(${Number(project.id)})"`;
+
+    return `
+      <article class="${itemClass}"${dataCategory} data-project-id="${Number(project.id)}" style="background-image:url('${image}')"${clickAction}>
+        ${albumBadge}
+        <div><h3>${title}</h3><p>${options.full ? category : description}</p></div>
+      </article>
+    `;
+  }
+
   async function loadPortfolioHighlights() {
     const container = document.getElementById('dynamic-portfolio-highlights');
     if (!db || !container) return;
 
     const { data, error } = await db
-      .from('portfolio_fotos')
-      .select('id, imagem_url, created_at, portfolio:projeto_id(id, titulo, categoria)')
+      .from('portfolio')
+      .select('*, portfolio_fotos(id, imagem_url, created_at)')
       .order('created_at', { ascending: false })
       .limit(5);
 
@@ -124,19 +158,8 @@
       return;
     }
 
-    container.innerHTML = data.map((item) => {
-      const project = item.portfolio || {};
-      const image = getPublicUrl('portfolio', item.imagem_url);
-      const title = escapeHtml(project.titulo || 'Projeto');
-      const category = escapeHtml(project.categoria || 'Portfólio');
-      const description = escapeHtml(item.descricao || category);
-
-      return `
-        <article class="work reveal visible" style="background-image:url('${image}')">
-          <div><h3>${title}</h3><p>${description}</p></div>
-        </article>
-      `;
-    }).join('');
+    window.portfolioAlbums = data;
+    container.innerHTML = data.map((project) => renderPortfolioCard(project)).join('');
   }
 
   async function loadFullPortfolio() {
@@ -144,8 +167,8 @@
     if (!db || !container) return;
 
     const { data, error } = await db
-      .from('portfolio_fotos')
-      .select('id, imagem_url, created_at, portfolio:projeto_id(id, titulo, categoria)')
+      .from('portfolio')
+      .select('*, portfolio_fotos(id, imagem_url, created_at)')
       .order('created_at', { ascending: false });
 
     if (error || !data || data.length === 0) {
@@ -153,18 +176,8 @@
       return;
     }
 
-    container.innerHTML = data.map((item) => {
-      const project = item.portfolio || {};
-      const image = getPublicUrl('portfolio', item.imagem_url);
-      const title = escapeHtml(project.titulo || 'Projeto');
-      const category = escapeHtml(project.categoria || 'Portfólio');
-
-      return `
-        <article class="work portfolio-item reveal visible" data-category="${category}" style="background-image:url('${image}')">
-          <div><h3>${title}</h3><p>${category}</p></div>
-        </article>
-      `;
-    }).join('');
+    window.portfolioAlbums = data;
+    container.innerHTML = data.map((project) => renderPortfolioCard(project, { full: true })).join('');
 
     setupPortfolioFilters();
   }
@@ -214,6 +227,95 @@
       });
     });
   }
+
+  function ensurePortfolioAlbumModal() {
+    let modal = document.getElementById('portfolio-album-modal');
+    if (modal) return modal;
+
+    modal = document.createElement('div');
+    modal.id = 'portfolio-album-modal';
+    modal.className = 'album-modal';
+    modal.innerHTML = `
+      <div class="album-dialog" role="dialog" aria-modal="true" aria-label="Álbum do projeto">
+        <button class="album-close" type="button" aria-label="Fechar álbum" onclick="closePortfolioAlbum()">×</button>
+        <div class="album-media">
+          <button class="album-nav album-prev" type="button" aria-label="Foto anterior" onclick="changePortfolioPhoto(-1)">‹</button>
+          <img id="album-image" alt="Foto do projeto" />
+          <button class="album-nav album-next" type="button" aria-label="Próxima foto" onclick="changePortfolioPhoto(1)">›</button>
+        </div>
+        <div class="album-info">
+          <h3 id="album-title"></h3>
+          <p id="album-meta"></p>
+        </div>
+      </div>
+    `;
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closePortfolioAlbum();
+    });
+
+    document.body.appendChild(modal);
+    return modal;
+  }
+
+  function renderCurrentAlbumPhoto() {
+    const state = window.currentPortfolioAlbum;
+    if (!state) return;
+
+    const modal = ensurePortfolioAlbumModal();
+    const image = modal.querySelector('#album-image');
+    const title = modal.querySelector('#album-title');
+    const meta = modal.querySelector('#album-meta');
+    const previous = modal.querySelector('.album-prev');
+    const next = modal.querySelector('.album-next');
+    const currentPhoto = state.photos[state.index];
+
+    image.src = getPublicUrl('portfolio', currentPhoto);
+    title.textContent = state.title;
+    meta.textContent = `${state.category} • Foto ${state.index + 1} de ${state.photos.length}`;
+    previous.style.display = state.photos.length > 1 ? 'grid' : 'none';
+    next.style.display = state.photos.length > 1 ? 'grid' : 'none';
+  }
+
+  window.openPortfolioAlbum = function openPortfolioAlbum(projectId) {
+    const project = (window.portfolioAlbums || []).find((item) => Number(item.id) === Number(projectId));
+    if (!project) return;
+
+    const photos = getProjectPhotos(project);
+    if (photos.length === 0) return;
+
+    window.currentPortfolioAlbum = {
+      index: 0,
+      photos,
+      title: project.titulo || project.titulo_projeto || 'Projeto',
+      category: project.categoria || project.categoria_projeto || 'Portfólio'
+    };
+
+    ensurePortfolioAlbumModal().classList.add('open');
+    document.body.classList.add('album-open');
+    renderCurrentAlbumPhoto();
+  };
+
+  window.closePortfolioAlbum = function closePortfolioAlbum() {
+    const modal = document.getElementById('portfolio-album-modal');
+    if (modal) modal.classList.remove('open');
+    document.body.classList.remove('album-open');
+    window.currentPortfolioAlbum = null;
+  };
+
+  window.changePortfolioPhoto = function changePortfolioPhoto(direction) {
+    const state = window.currentPortfolioAlbum;
+    if (!state || state.photos.length < 2) return;
+
+    state.index = (state.index + direction + state.photos.length) % state.photos.length;
+    renderCurrentAlbumPhoto();
+  };
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closePortfolioAlbum();
+    if (event.key === 'ArrowLeft') changePortfolioPhoto(-1);
+    if (event.key === 'ArrowRight') changePortfolioPhoto(1);
+  });
 
   async function handleCurriculoSubmit(event) {
     event.preventDefault();
