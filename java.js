@@ -112,10 +112,9 @@
   }
 
   function formatPhone(value) {
-    let digits = onlyDigits(value);
-    if (digits.length > 11 && digits.startsWith('55')) {
-      digits = digits.slice(2);
-    }
+    const text = String(value || '');
+    const withoutPrefix = text.startsWith('+55') ? text.slice(3) : text;
+    let digits = onlyDigits(withoutPrefix);
     digits = digits.slice(0, 11);
     if (digits.length === 0) return '+55 ';
 
