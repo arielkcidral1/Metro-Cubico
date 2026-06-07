@@ -542,6 +542,8 @@
       return;
     }
 
+    window.adminPortfolioData = data;
+
     tbody.innerHTML = data.map((item) => {
       const photos = item.portfolio_fotos || [];
       const firstPhoto = photos[0]?.imagem_url || item.imagem_url || '';
@@ -557,7 +559,10 @@
           <td>${escapeHtml(item.titulo)}</td>
           <td>${escapeHtml(item.categoria)}</td>
           <td>${photoCell}</td>
-          <td><button type="button" class="btn-danger" onclick="deletePortfolioItem(${item.id})">Excluir</button></td>
+          <td>
+            <button type="button" class="btn-edit" onclick="openEditModal(${item.id})">Editar</button>
+            <button type="button" class="btn-danger" onclick="deletePortfolioItem(${item.id})">Excluir</button>
+          </td>
         </tr>
       `;
     }).join('');
@@ -653,6 +658,84 @@
     loadAdminData();
   };
 
+  window.openEditModal = function(id) {
+    const project = window.adminPortfolioData?.find(p => p.id === id);
+    if (!project) return;
+    
+    document.getElementById('edit_projeto_id').value = project.id;
+    document.getElementById('edit_titulo').value = project.titulo || '';
+    
+    const catSelect = document.getElementById('edit_categoria');
+    if (project.categoria) {
+      catSelect.value = project.categoria;
+    }
+    
+    const photosGrid = document.getElementById('edit-photos-list');
+    photosGrid.innerHTML = '';
+    
+    const photos = project.portfolio_fotos || [];
+    if (photos.length === 0) {
+      photosGrid.innerHTML = '<p style="color: #666; font-size: 0.9rem; grid-column: 1 / -1;">Nenhuma foto cadastrada.</p>';
+    } else {
+      photos.forEach(photo => {
+        const url = getPublicUrl('portfolio', photo.imagem_url);
+        photosGrid.innerHTML += `
+          <div class="photo-edit-item">
+            <img src="${url}" alt="Foto">
+            <button type="button" title="Apagar Foto" onclick="deleteProjectPhoto(${photo.id}, '${photo.imagem_url}', ${project.id})">X</button>
+          </div>
+        `;
+      });
+    }
+    
+    document.getElementById('edit-modal').style.display = 'flex';
+  };
+
+  window.closeEditModal = function() {
+    document.getElementById('edit-modal').style.display = 'none';
+  };
+
+  window.deleteProjectPhoto = async function(photoId, photoPath, projectId) {
+    if (!db || !confirm('Tem certeza que deseja apagar esta foto do projeto?')) return;
+    
+    if (photoPath && !/^https?:\/\//i.test(photoPath)) {
+      await db.storage.from('portfolio').remove([photoPath]);
+    }
+    
+    const { error } = await db.from('portfolio_fotos').delete().eq('id', photoId);
+    if (error) {
+      alert('Erro ao apagar foto: ' + error.message);
+      return;
+    }
+    
+    alert('Foto apagada com sucesso!');
+    await loadAdminData();
+    openEditModal(projectId);
+  };
+
+  async function handleEditProjectSubmit(event) {
+    event.preventDefault();
+    if (!db) return;
+    
+    const id = document.getElementById('edit_projeto_id').value;
+    const titulo = document.getElementById('edit_titulo').value;
+    const categoria = document.getElementById('edit_categoria').value;
+    
+    const { error } = await db.from('portfolio').update({
+      titulo: titulo,
+      categoria: categoria
+    }).eq('id', id);
+    
+    if (error) {
+      alert('Erro ao atualizar projeto: ' + error.message);
+      return;
+    }
+    
+    alert('Projeto atualizado com sucesso!');
+    closeEditModal();
+    loadAdminData();
+  }
+
   function setupForms() {
     const curriculoForm = document.querySelector('form[data-form="curriculo"]');
     if (curriculoForm) curriculoForm.addEventListener('submit', handleCurriculoSubmit);
@@ -668,6 +751,9 @@
 
     const reviewForm = document.querySelector('form[data-form="admin-avaliacao"]');
     if (reviewForm) reviewForm.addEventListener('submit', handleAdminReviewSubmit);
+
+    const editProjectForm = document.getElementById('edit-project-form');
+    if (editProjectForm) editProjectForm.addEventListener('submit', handleEditProjectSubmit);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
