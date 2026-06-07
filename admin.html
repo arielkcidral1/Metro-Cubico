@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel Administrativo | Metro CÃºbico</title>
+  <title>Painel Administrativo | Metro Cúbico</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -72,31 +72,31 @@
     <div class="login-box">
       <h2>Acesso Restrito</h2>
       <form id="login-form">
-        <div class="field"><label for="login-user">UsuÃ¡rio</label><input type="text" id="login-user" required></div>
+        <div class="field"><label for="login-user">Usuário</label><input type="text" id="login-user" required></div>
         <div class="field"><label for="login-pass">Senha</label><input type="password" id="login-pass" required></div>
         <button type="submit">Entrar no Painel</button>
-        <div id="login-error" class="login-error">UsuÃ¡rio ou senha incorretos.</div>
+        <div id="login-error" class="login-error">Usuário ou senha incorretos.</div>
       </form>
     </div>
   </div>
 
   <aside class="sidebar">
     <h2>Painel Admin</h2>
-    <button class="nav-btn active" onclick="showTab('portfolio')">Fotos do PortfÃ³lio</button>
-    <button class="nav-btn" onclick="showTab('curriculos')">Consultar CurrÃ­culos</button>
-    <button class="nav-btn" onclick="showTab('avaliacoes')">Gerenciar AvaliaÃ§Ãµes</button>
+    <button class="nav-btn active" onclick="showTab('portfolio')">Fotos do Portfólio</button>
+    <button class="nav-btn" onclick="showTab('curriculos')">Consultar Currículos</button>
+    <button class="nav-btn" onclick="showTab('avaliacoes')">Gerenciar Avaliações</button>
     <a href="index.html" class="nav-btn logout-btn" style="text-decoration: none; display: block;">Voltar ao Site</a>
   </aside>
 
   <main class="main-content">
     
-    <!-- ABA: ADICIONAR PORTFÃ“LIO -->
+    <!-- ABA: ADICIONAR PORTFÓLIO -->
     <section id="portfolio" class="admin-section active">
-      <h3>Adicionar Projeto ao PortfÃ³lio</h3>
+      <h3>Adicionar Projeto ao Portfólio</h3>
       <form class="admin-form" data-form="admin-portfolio">
         <div class="form-row">
           <div class="field">
-            <label for="titulo_projeto">TÃ­tulo do Projeto</label>
+            <label for="titulo_projeto">Título do Projeto</label>
             <input type="text" id="titulo_projeto" name="titulo_projeto" placeholder="Ex: Jardim Corporativo XYZ" required />
           </div>
           <div class="field">
@@ -121,10 +121,10 @@
         <thead>
           <tr>
             <th>Data</th>
-            <th>TÃ­tulo</th>
+            <th>Título</th>
             <th>Categoria</th>
             <th>Foto</th>
-            <th>AÃ§Ã£o</th>
+            <th>Ação</th>
           </tr>
         </thead>
         <tbody id="admin-portfolio-list">
@@ -133,10 +133,10 @@
       </table>
     </section>
 
-    <!-- ABA: CONSULTAR CURRÃCULOS -->
+    <!-- ABA: CONSULTAR CURRÍCULOS -->
     <section id="curriculos" class="admin-section">
-      <h3>CurrÃ­culos Recebidos</h3>
-      <p style="color: #666; margin-bottom: 20px;">Lista de candidatos que enviaram currÃ­culo pela pÃ¡gina "Trabalhe Conosco".</p>
+      <h3>Currículos Recebidos</h3>
+      <p style="color: #666; margin-bottom: 20px;">Lista de candidatos que enviaram currículo pela página "Trabalhe Conosco".</p>
       <table class="admin-table">
         <thead>
           <tr>
@@ -153,9 +153,9 @@
       </table>
     </section>
 
-    <!-- ABA: ADICIONAR AVALIAÃ‡Ã•ES -->
+    <!-- ABA: ADICIONAR AVALIAÇÕES -->
     <section id="avaliacoes" class="admin-section">
-      <h3>Adicionar Nova AvaliaÃ§Ã£o</h3>
+      <h3>Adicionar Nova Avaliação</h3>
       <form class="admin-form" data-form="admin-avaliacao">
         <div class="form-row">
           <div class="field">
@@ -163,29 +163,29 @@
             <input type="text" id="nome_comentador" name="nome_comentador" placeholder="Nome do cliente" required />
           </div>
           <div class="field">
-            <label for="instituicao_comentador">InstituiÃ§Ã£o / Empresa</label>
+            <label for="instituicao_comentador">Instituição / Empresa</label>
             <input type="text" id="instituicao_comentador" name="instituicao_comentador" placeholder="Empresa ou instituição" required />
           </div>
         </div>
         <div class="field">
-          <label for="comentario_avaliacao">ComentÃ¡rio</label>
+          <label for="comentario_avaliacao">Comentário</label>
           <textarea id="comentario_avaliacao" name="comentario_avaliacao" placeholder="Escreva o depoimento do cliente..." required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Adicionar AvaliaÃ§Ã£o</button>
+        <button type="submit" class="btn btn-primary">Adicionar Avaliação</button>
       </form>
-      <h3 style="margin-top: 36px;">AvaliaÃ§Ãµes Cadastradas</h3>
+      <h3 style="margin-top: 36px;">Avaliações Cadastradas</h3>
       <table class="admin-table">
         <thead>
           <tr>
             <th>Data</th>
             <th>Nome</th>
             <th>Empresa</th>
-            <th>ComentÃ¡rio</th>
-            <th>AÃ§Ã£o</th>
+            <th>Comentário</th>
+            <th>Ação</th>
           </tr>
         </thead>
         <tbody id="admin-avaliacoes-list">
-          <tr><td colspan="5" class="empty-row">Nenhuma avaliaÃ§Ã£o cadastrada.</td></tr>
+          <tr><td colspan="5" class="empty-row">Nenhuma avaliação cadastrada.</td></tr>
         </tbody>
       </table>
     </section>

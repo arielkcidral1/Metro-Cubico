@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   const db = window.metroSupabase || null;
 
   const header = document.getElementById('header');

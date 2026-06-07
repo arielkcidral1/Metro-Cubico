@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   const SUPABASE_URL =
   "https://gprfrhzctjtmwbyyqwry.supabase.co";
 
