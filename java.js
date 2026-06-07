@@ -231,22 +231,19 @@
 
   async function handleLogin(event) {
     event.preventDefault();
-    if (!db) return;
 
-    const email = document.getElementById('login-user').value;
+    const user = document.getElementById('login-user').value;
     const password = document.getElementById('login-pass').value;
     const errorBox = document.getElementById('login-error');
 
-    const { error } = await db.auth.signInWithPassword({ email, password });
-
-    if (error) {
-      if (errorBox) errorBox.style.display = 'block';
+    if (user.toLowerCase() === 'alexandre' && password === 'Metro123') {
+      if (errorBox) errorBox.style.display = 'none';
+      document.getElementById('login-overlay').style.display = 'none';
+      loadAdminData();
       return;
     }
 
-    if (errorBox) errorBox.style.display = 'none';
-    document.getElementById('login-overlay').style.display = 'none';
-    loadAdminData();
+    if (errorBox) errorBox.style.display = 'block';
   }
 
   async function protectAdmin() {
