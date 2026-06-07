@@ -324,13 +324,26 @@
     const form = event.target;
     const button = form.querySelector('button[type="submit"]');
     const data = new FormData(form);
-    const file = data.get('arquivo');
+    const fileInput = form.querySelector('#arquivo');
+    const file = fileInput && fileInput.files ? fileInput.files[0] : null;
+
+    if (!file || !file.name) {
+      alert('Selecione um arquivo de currículo antes de enviar.');
+      return;
+    }
 
     button.disabled = true;
     button.textContent = 'Enviando...';
 
     try {
-      const filePath = `${Date.now()}-${file.name}`;
+      const extension = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : 'pdf';
+      const baseName = file.name
+        .replace(/\.[^.]+$/, '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^\w.-]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'curriculo';
+      const filePath = `${Date.now()}-${baseName}.${extension}`;
       const upload = await db.storage.from('curriculos').upload(filePath, file);
       if (upload.error) throw upload.error;
 
