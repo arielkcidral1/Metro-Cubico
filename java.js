@@ -1022,7 +1022,13 @@
   };
 
   window.deleteJob = async function deleteJob(id) {
-    if (!db || !confirm('Excluir esta vaga? Os currículos enviados continuarão no painel com o nome da vaga.')) return;
+    if (!db) return;
+
+    const firstConfirm = confirm('Tem certeza que deseja excluir esta vaga?');
+    if (!firstConfirm) return;
+
+    const secondConfirm = confirm('Confirma novamente? Os currículos enviados continuarão no painel com o nome da vaga.');
+    if (!secondConfirm) return;
 
     const { error } = await db.from('vagas').delete().eq('id', id);
     if (error) {
