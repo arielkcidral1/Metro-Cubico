@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b3b2a" />
+  <title>Login Administrativo | Metro Cúbico</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #0b3b2a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .login-box {
+      background: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 360px;
+    }
+    .login-box h1 {
+      margin: 0 0 24px;
+      color: #0b3b2a;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    .field {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      color: #444;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font: inherit;
+    }
+    input:focus {
+      border-color: #0b3b2a;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #1c6f4e;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.2s;
+    }
+    button:hover { background: #15563d; }
+    .login-error {
+      color: #d93025;
+      font-size: 0.85rem;
+      margin-top: 15px;
+      text-align: center;
+      display: none;
+      font-weight: 500;
+    }
+    .back-link {
+      display: block;
+      margin-top: 18px;
+      text-align: center;
+      color: #0b3b2a;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main class="login-box">
+    <h1>Acesso Restrito</h1>
+    <form id="login-form">
+      <div class="field">
+        <label for="login-user">Usuário</label>
+        <input type="text" id="login-user" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="login-pass">Senha</label>
+        <input type="password" id="login-pass" autocomplete="current-password" required>
+      </div>
+      <button type="submit">Entrar no Painel</button>
+      <div id="login-error" class="login-error">Usuário ou senha incorretos.</div>
+    </form>
+    <a href="index.html" class="back-link">Voltar ao site</a>
+  </main>
+
+  <script src="java.js"></script>
+</body>
+</html>

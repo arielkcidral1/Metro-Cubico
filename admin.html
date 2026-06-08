@@ -60,40 +60,9 @@
     .photo-edit-item img { width: 100%; height: 100%; object-fit: cover; }
     .photo-edit-item button { position: absolute; top: 4px; right: 4px; background: rgba(220, 38, 38, 0.9); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
     .photo-edit-item button:hover { background: #b91c1c; }
-
-    /* Tela de Login */
-    .login-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: #0b3b2a; display: flex; align-items: center; justify-content: center;
-      z-index: 9999; flex-direction: column;
-    }
-    .login-box {
-      background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      width: 100%; max-width: 360px;
-    }
-    .login-box h2 { margin-top: 0; color: #0b3b2a; text-align: center; margin-bottom: 24px; }
-    .login-box .field { margin-bottom: 20px; text-align: left; }
-    .login-box label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: #444; }
-    .login-box input { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; }
-    .login-box button { width: 100%; padding: 12px; background: #1c6f4e; color: #fff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 1rem; transition: 0.2s; }
-    .login-box button:hover { background: #15563d; }
-    .login-error { color: #d93025; font-size: 0.85rem; margin-top: 15px; text-align: center; display: none; font-weight: 500; }
 </style>
 </head>
-<body>
-
-  <!-- TELA DE LOGIN -->
-  <div id="login-overlay" class="login-overlay">
-    <div class="login-box">
-      <h2>Acesso Restrito</h2>
-      <form id="login-form">
-        <div class="field"><label for="login-user">Usuário</label><input type="text" id="login-user" required></div>
-        <div class="field"><label for="login-pass">Senha</label><input type="password" id="login-pass" required></div>
-        <button type="submit">Entrar no Painel</button>
-        <div id="login-error" class="login-error">Usuário ou senha incorretos.</div>
-      </form>
-    </div>
-  </div>
+<body class="admin-page">
 
   <aside class="sidebar">
     <h2>Painel Admin</h2>

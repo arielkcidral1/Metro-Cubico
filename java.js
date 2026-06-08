@@ -573,8 +573,8 @@
 
     if (user.toLowerCase() === 'alexandre' && (password === 'Metro123' || password === 'metro123')) {
       if (errorBox) errorBox.style.display = 'none';
-      document.getElementById('login-overlay').style.display = 'none';
-      loadAdminData();
+      sessionStorage.setItem('metroAdminLoggedIn', 'true');
+      window.location.href = 'admin.html';
       return;
     }
 
@@ -582,8 +582,15 @@
   }
 
   async function protectAdmin() {
-    const overlay = document.getElementById('login-overlay');
-    if (overlay) overlay.style.display = 'flex';
+    const isAdminPage = document.body.classList.contains('admin-page');
+    if (!isAdminPage) return;
+
+    if (sessionStorage.getItem('metroAdminLoggedIn') !== 'true') {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    loadAdminData();
   }
 
   window.showTab = function showTab(tabId) {
