@@ -19,6 +19,44 @@ create index if not exists vagas_status_created_at_idx
 create index if not exists curriculos_vaga_id_created_at_idx
   on public.curriculos (vaga_id, created_at desc);
 
+do $$
+declare
+  constraint_record record;
+  index_record record;
+begin
+  for constraint_record in
+    select conname
+    from pg_constraint
+    where conrelid = 'public.curriculos'::regclass
+      and contype = 'u'
+      and conkey = array[
+        (
+          select attnum
+          from pg_attribute
+          where attrelid = 'public.curriculos'::regclass
+            and attname = 'cpf'
+        )
+      ]
+  loop
+    execute format('alter table public.curriculos drop constraint if exists %I', constraint_record.conname);
+  end loop;
+
+  for index_record in
+    select indexname
+    from pg_indexes
+    where schemaname = 'public'
+      and tablename = 'curriculos'
+      and indexdef ilike '%unique%'
+      and indexdef ilike '%(cpf)%'
+  loop
+    execute format('drop index if exists public.%I', index_record.indexname);
+  end loop;
+end $$;
+
+create unique index if not exists curriculos_cpf_vaga_id_unique_idx
+  on public.curriculos (cpf, vaga_id)
+  where vaga_id is not null;
+
 alter table public.vagas enable row level security;
 
 grant select, insert, update, delete on public.vagas to anon, authenticated;

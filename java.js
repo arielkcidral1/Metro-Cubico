@@ -535,7 +535,7 @@
         return;
       }
 
-      const filePath = `${Date.now()}-${safeStorageFileName(file.name, 'curriculo')}`;
+      const filePath = `${vagaId}/${Date.now()}-${safeStorageFileName(file.name, 'curriculo')}`;
       const upload = await db.storage.from('curriculos').upload(filePath, file);
       if (upload.error) throw upload.error;
 
