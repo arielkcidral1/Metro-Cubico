@@ -593,6 +593,11 @@
     loadAdminData();
   }
 
+  window.logoutAdmin = function logoutAdmin() {
+    sessionStorage.removeItem('metroAdminLoggedIn');
+    window.location.href = 'login.html';
+  };
+
   window.showTab = function showTab(tabId) {
     document.querySelectorAll('.admin-section').forEach((sec) => sec.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach((btn) => btn.classList.remove('active'));
