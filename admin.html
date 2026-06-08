@@ -98,7 +98,7 @@
   <aside class="sidebar">
     <h2>Painel Admin</h2>
     <button class="nav-btn active" onclick="showTab('portfolio')">Fotos do Portfólio</button>
-    <button class="nav-btn" onclick="showTab('curriculos')">Consultar Currículos</button>
+    <button class="nav-btn" onclick="showTab('curriculos')">Quadro de Vagas</button>
     <button class="nav-btn" onclick="showTab('avaliacoes')">Gerenciar Avaliações</button>
     <a href="index.html" class="nav-btn logout-btn" style="text-decoration: none; display: block;">Voltar ao Site</a>
   </aside>
@@ -193,6 +193,7 @@
       <div class="admin-subsection">
         <h3>Postar Vaga de Emprego</h3>
         <form class="admin-form" data-form="admin-vaga">
+          <input type="hidden" id="vaga_id_admin" name="id" />
           <div class="form-row">
             <div class="field">
               <label for="vaga_titulo_admin">Título da vaga</label>
@@ -213,13 +214,6 @@
                 <option value="Cadastro">Cadastro</option>
               </select>
             </div>
-            <div class="field">
-              <label for="vaga_status_admin">Status</label>
-              <select id="vaga_status_admin" name="status" required>
-                <option value="aberta">Aberta</option>
-                <option value="fechada">Fechada</option>
-              </select>
-            </div>
           </div>
           <div class="field">
             <label for="vaga_descricao_admin">Descrição</label>
@@ -229,7 +223,10 @@
             <label for="vaga_requisitos_admin">Requisitos</label>
             <textarea id="vaga_requisitos_admin" name="requisitos" placeholder="Digite um requisito por linha"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Publicar vaga</button>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button type="submit" class="btn btn-primary" id="vaga-submit-btn">Publicar vaga</button>
+            <button type="button" class="btn btn-outline" id="vaga-cancel-btn" style="display: none;" onclick="cancelJobEdit()">Cancelar edição</button>
+          </div>
         </form>
       </div>
 
@@ -240,19 +237,18 @@
             <th>Data</th>
             <th>Vaga</th>
             <th>Área</th>
-            <th>Status</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody id="admin-vagas-list">
-          <tr><td colspan="5" class="empty-row">Nenhuma vaga publicada.</td></tr>
+          <tr><td colspan="4" class="empty-row">Nenhuma vaga publicada.</td></tr>
         </tbody>
       </table>
 
       <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
 
       <h3>Currículos Recebidos</h3>
-      <p style="color: #666; margin-bottom: 20px;">Consulte os candidatos por vaga publicada.</p>
+      <p style="color: #666; margin-bottom: 20px;">Lista de candidatos que enviaram currículo pelas vagas publicadas.</p>
       <div class="admin-filter">
         <div class="field">
           <label for="curriculo-vaga-filter">Filtrar por vaga</label>

@@ -686,30 +686,34 @@
     const form = event.target;
     const button = form.querySelector('button[type="submit"]');
     const data = new FormData(form);
+    const jobId = data.get('id');
+    const payload = {
+      titulo: data.get('titulo'),
+      area: data.get('area'),
+      tipo: data.get('tipo'),
+      status: 'aberta',
+      descricao: data.get('descricao'),
+      requisitos: data.get('requisitos')
+    };
 
     button.disabled = true;
-    button.textContent = 'Publicando...';
+    button.textContent = jobId ? 'Salvando...' : 'Publicando...';
 
     try {
-      const { error } = await db.from('vagas').insert({
-        titulo: data.get('titulo'),
-        area: data.get('area'),
-        tipo: data.get('tipo'),
-        status: data.get('status'),
-        descricao: data.get('descricao'),
-        requisitos: data.get('requisitos')
-      });
+      const response = jobId
+        ? await db.from('vagas').update(payload).eq('id', Number(jobId))
+        : await db.from('vagas').insert(payload);
 
-      if (error) throw error;
+      if (response.error) throw response.error;
 
-      alert('Vaga publicada com sucesso!');
-      form.reset();
+      alert(jobId ? 'Vaga atualizada com sucesso!' : 'Vaga publicada com sucesso!');
+      resetJobForm();
       loadAdminData();
     } catch (error) {
-      alert(`Não foi possível publicar a vaga: ${error.message}`);
+      alert(`Não foi possível salvar a vaga: ${error.message}`);
     } finally {
       button.disabled = false;
-      button.textContent = 'Publicar vaga';
+      button.textContent = document.getElementById('vaga_id_admin')?.value ? 'Salvar vaga' : 'Publicar vaga';
     }
   }
 
@@ -777,28 +781,25 @@
       .order('created_at', { ascending: false });
 
     if (error) {
-      tbody.innerHTML = `<tr><td colspan="5" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="4" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
       return;
     }
 
     if (!data || data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" class="empty-row">Nenhuma vaga publicada.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" class="empty-row">Nenhuma vaga publicada.</td></tr>';
+      window.adminJobsData = [];
       return;
     }
 
+    window.adminJobsData = data;
     tbody.innerHTML = data.map((job) => {
-      const statusLabel = job.status === 'aberta' ? 'Aberta' : 'Fechada';
-      const nextStatus = job.status === 'aberta' ? 'fechada' : 'aberta';
-      const actionLabel = job.status === 'aberta' ? 'Fechar' : 'Reabrir';
-
       return `
         <tr>
           <td>${formatDate(job.created_at)}</td>
           <td>${escapeHtml(job.titulo)}</td>
           <td>${escapeHtml(job.area)}</td>
-          <td>${statusLabel}</td>
           <td>
-            <button type="button" class="btn-edit" onclick="toggleJobStatus(${job.id}, '${nextStatus}')">${actionLabel}</button>
+            <button type="button" class="btn-edit" onclick="editJob(${job.id})">Editar</button>
             <button type="button" class="btn-danger" onclick="deleteJob(${job.id})">Excluir</button>
           </td>
         </tr>
@@ -970,16 +971,41 @@
     loadAdminData();
   };
 
-  window.toggleJobStatus = async function toggleJobStatus(id, status) {
-    if (!db) return;
+  function resetJobForm() {
+    const form = document.querySelector('form[data-form="admin-vaga"]');
+    if (!form) return;
 
-    const { error } = await db.from('vagas').update({ status }).eq('id', id);
-    if (error) {
-      alert(`Não foi possível atualizar a vaga: ${error.message}`);
-      return;
-    }
+    form.reset();
+    const idInput = document.getElementById('vaga_id_admin');
+    const submitButton = document.getElementById('vaga-submit-btn');
+    const cancelButton = document.getElementById('vaga-cancel-btn');
 
-    loadAdminData();
+    if (idInput) idInput.value = '';
+    if (submitButton) submitButton.textContent = 'Publicar vaga';
+    if (cancelButton) cancelButton.style.display = 'none';
+  }
+
+  window.cancelJobEdit = function cancelJobEdit() {
+    resetJobForm();
+  };
+
+  window.editJob = function editJob(id) {
+    const job = (window.adminJobsData || []).find((item) => Number(item.id) === Number(id));
+    if (!job) return;
+
+    document.getElementById('vaga_id_admin').value = job.id;
+    document.getElementById('vaga_titulo_admin').value = job.titulo || '';
+    document.getElementById('vaga_area_admin').value = job.area || '';
+    document.getElementById('vaga_tipo_admin').value = job.tipo || 'Presencial';
+    document.getElementById('vaga_descricao_admin').value = job.descricao || '';
+    document.getElementById('vaga_requisitos_admin').value = job.requisitos || '';
+
+    const submitButton = document.getElementById('vaga-submit-btn');
+    const cancelButton = document.getElementById('vaga-cancel-btn');
+    if (submitButton) submitButton.textContent = 'Salvar vaga';
+    if (cancelButton) cancelButton.style.display = 'inline-flex';
+
+    document.querySelector('form[data-form="admin-vaga"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   window.deleteJob = async function deleteJob(id) {
