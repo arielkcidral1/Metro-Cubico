@@ -233,29 +233,12 @@
     return `
       <article class="job-card reveal visible">
         <div class="job-card-head">
-          <div class="job-info">
-            <span>Título da vaga</span>
-            <strong>${title}</strong>
-          </div>
+          <span class="job-tag">${area}</span>
+          <span class="job-type">${type}</span>
         </div>
-        <div class="job-meta-grid">
-          <div class="job-info">
-            <span>Área</span>
-            <strong>${area}</strong>
-          </div>
-          <div class="job-info">
-            <span>Tipo</span>
-            <strong>${type}</strong>
-          </div>
-        </div>
-        <div class="job-info">
-          <span>Descrição da vaga</span>
-          <p>${description}</p>
-        </div>
-        <div class="job-info">
-          <span>Requisitos</span>
-          ${requirementList || '<p>Não informado.</p>'}
-        </div>
+        <h2>${title}</h2>
+        <p>${description}</p>
+        ${requirementList || '<p class="job-no-requirements">Requisitos não informados.</p>'}
         <a class="btn btn-primary" href="Curriculo.html?vaga=${id}">Enviar currículo</a>
       </article>
     `;
