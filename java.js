@@ -730,7 +730,7 @@
   }
 
   async function loadAdminCurriculos() {
-    const tbody = document.querySelector('#curriculos tbody');
+    const tbody = document.getElementById('admin-curriculos-list');
     if (!db || !tbody) return;
     const filter = document.getElementById('curriculo-vaga-filter')?.value || '';
     let query = db
