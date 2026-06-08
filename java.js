@@ -212,6 +212,104 @@
     `;
   }
 
+  function getJobRequirements(job) {
+    return String(job.requisitos || '')
+      .split(/\r?\n/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  function renderJobCard(job) {
+    const id = Number(job.id);
+    const title = escapeHtml(job.titulo || 'Vaga');
+    const area = escapeHtml(job.area || 'Oportunidade');
+    const type = escapeHtml(job.tipo || 'Presencial');
+    const description = escapeHtml(job.descricao || '');
+    const requirements = getJobRequirements(job);
+    const requirementList = requirements.length > 0
+      ? `<ul>${requirements.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`
+      : '';
+
+    return `
+      <article class="job-card reveal visible">
+        <div class="job-card-head">
+          <span class="job-tag">${area}</span>
+          <span class="job-type">${type}</span>
+        </div>
+        <h2>${title}</h2>
+        <p>${description}</p>
+        ${requirementList}
+        <a class="btn btn-primary" href="Curriculo.html?vaga=${id}">Enviar currículo</a>
+      </article>
+    `;
+  }
+
+  async function loadPublicJobs() {
+    const container = document.getElementById('dynamic-jobs');
+    if (!db || !container) return;
+
+    const { data, error } = await db
+      .from('vagas')
+      .select('*')
+      .eq('status', 'aberta')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      container.innerHTML = `<div class="jobs-empty">${escapeHtml(error.message)}</div>`;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      container.innerHTML = '<div class="jobs-empty">Nenhuma vaga aberta no momento.</div>';
+      return;
+    }
+
+    container.innerHTML = data.map((job) => renderJobCard(job)).join('');
+  }
+
+  async function loadCurriculoJobOptions() {
+    const select = document.getElementById('vaga_id');
+    const hiddenTitle = document.getElementById('vaga_titulo');
+    if (!db || !select) return;
+
+    const selectedFromUrl = new URLSearchParams(window.location.search).get('vaga') || '';
+    const { data, error } = await db
+      .from('vagas')
+      .select('id, titulo, area')
+      .eq('status', 'aberta')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      select.innerHTML = `<option value="">${escapeHtml(error.message)}</option>`;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      select.innerHTML = '<option value="">Nenhuma vaga aberta no momento</option>';
+      return;
+    }
+
+    select.innerHTML = '<option value="">Selecione uma vaga...</option>';
+    data.forEach((job) => {
+      const option = document.createElement('option');
+      option.value = job.id;
+      option.textContent = `${job.titulo} (${job.area})`;
+      option.dataset.title = job.titulo;
+      select.appendChild(option);
+    });
+
+    if (selectedFromUrl) select.value = selectedFromUrl;
+    if (!select.value && data.length === 1) select.value = data[0].id;
+
+    function syncTitle() {
+      const option = select.selectedOptions[0];
+      if (hiddenTitle) hiddenTitle.value = option?.dataset.title || option?.textContent || '';
+    }
+
+    select.addEventListener('change', syncTitle);
+    syncTitle();
+  }
+
   async function loadPortfolioHighlights() {
     const container = document.getElementById('dynamic-portfolio-highlights');
     if (!db || !container) return;
@@ -397,9 +495,16 @@
     const file = fileInput && fileInput.files ? fileInput.files[0] : null;
     const cpf = onlyDigits(data.get('cpf'));
     const telefone = formatPhone(data.get('telefone'));
+    const vagaId = data.get('vaga_id') ? Number(data.get('vaga_id')) : null;
+    const vagaTitulo = data.get('vaga_titulo') || '';
 
     if (!file || !file.name) {
       alert('Selecione um arquivo de currículo antes de enviar.');
+      return;
+    }
+
+    if (!vagaId) {
+      alert('Selecione a vaga de interesse antes de enviar.');
       return;
     }
 
@@ -421,11 +526,12 @@
         .from('curriculos')
         .select('id')
         .eq('cpf', cpf)
+        .eq('vaga_id', vagaId)
         .maybeSingle();
 
       if (existing.error) throw existing.error;
       if (existing.data) {
-        alert('Já existe um currículo enviado para este CPF.');
+        alert('Já existe um currículo enviado para este CPF nesta vaga.');
         return;
       }
 
@@ -438,6 +544,8 @@
         cpf,
         telefone,
         email: data.get('email'),
+        vaga_id: vagaId,
+        vaga_titulo: vagaTitulo,
         arquivo_url: filePath
       });
       if (insert.error) throw insert.error;
@@ -446,7 +554,7 @@
       form.reset();
     } catch (error) {
       if (error.code === '23505') {
-        alert('Já existe um currículo enviado para este CPF.');
+        alert('Já existe um currículo enviado para este CPF nesta vaga.');
       } else {
         alert(`Não foi possível enviar o currículo: ${error.message}`);
       }
@@ -571,9 +679,45 @@
     loadAdminData();
   }
 
+  async function handleAdminJobSubmit(event) {
+    event.preventDefault();
+    if (!db) return;
+
+    const form = event.target;
+    const button = form.querySelector('button[type="submit"]');
+    const data = new FormData(form);
+
+    button.disabled = true;
+    button.textContent = 'Publicando...';
+
+    try {
+      const { error } = await db.from('vagas').insert({
+        titulo: data.get('titulo'),
+        area: data.get('area'),
+        tipo: data.get('tipo'),
+        status: data.get('status'),
+        descricao: data.get('descricao'),
+        requisitos: data.get('requisitos')
+      });
+
+      if (error) throw error;
+
+      alert('Vaga publicada com sucesso!');
+      form.reset();
+      loadAdminData();
+    } catch (error) {
+      alert(`Não foi possível publicar a vaga: ${error.message}`);
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Publicar vaga';
+    }
+  }
+
   async function loadAdminData() {
     if (!db) return;
     await Promise.all([
+      loadAdminJobs(),
+      loadAdminJobOptions(),
       loadAdminCurriculos(),
       loadAdminPortfolio(),
       loadAdminProjetoOptions(),
@@ -584,18 +728,23 @@
   async function loadAdminCurriculos() {
     const tbody = document.querySelector('#curriculos tbody');
     if (!db || !tbody) return;
-    const { data, error } = await db
+    const filter = document.getElementById('curriculo-vaga-filter')?.value || '';
+    let query = db
       .from('curriculos')
       .select('*')
       .order('created_at', { ascending: false });
 
+    if (filter) query = query.eq('vaga_id', Number(filter));
+
+    const { data, error } = await query;
+
     if (error) {
-      tbody.innerHTML = `<tr><td colspan="7" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
       return;
     }
 
     if (!data || data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" class="empty-row">Nenhum currículo recebido.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="empty-row">Nenhum currículo recebido.</td></tr>';
       return;
     }
 
@@ -605,6 +754,7 @@
       return `
         <tr>
           <td>${formatDate(item.created_at)}</td>
+          <td>${escapeHtml(item.vaga_titulo || 'Sem vaga vinculada')}</td>
           <td>${escapeHtml(item.nome)}</td>
           <td>${escapeHtml(formatCpf(item.cpf))}</td>
           <td>${escapeHtml(item.email)}</td>
@@ -614,6 +764,69 @@
         </tr>
       `;
     }).join('');
+  }
+  window.loadAdminCurriculos = loadAdminCurriculos;
+
+  async function loadAdminJobs() {
+    const tbody = document.getElementById('admin-vagas-list');
+    if (!db || !tbody) return;
+
+    const { data, error } = await db
+      .from('vagas')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      tbody.innerHTML = `<tr><td colspan="5" class="empty-row">${escapeHtml(error.message)}</td></tr>`;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty-row">Nenhuma vaga publicada.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.map((job) => {
+      const statusLabel = job.status === 'aberta' ? 'Aberta' : 'Fechada';
+      const nextStatus = job.status === 'aberta' ? 'fechada' : 'aberta';
+      const actionLabel = job.status === 'aberta' ? 'Fechar' : 'Reabrir';
+
+      return `
+        <tr>
+          <td>${formatDate(job.created_at)}</td>
+          <td>${escapeHtml(job.titulo)}</td>
+          <td>${escapeHtml(job.area)}</td>
+          <td>${statusLabel}</td>
+          <td>
+            <button type="button" class="btn-edit" onclick="toggleJobStatus(${job.id}, '${nextStatus}')">${actionLabel}</button>
+            <button type="button" class="btn-danger" onclick="deleteJob(${job.id})">Excluir</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async function loadAdminJobOptions() {
+    const select = document.getElementById('curriculo-vaga-filter');
+    if (!db || !select) return;
+
+    const selected = select.value;
+    const { data, error } = await db
+      .from('vagas')
+      .select('id, titulo, area')
+      .order('created_at', { ascending: false });
+
+    if (error) return;
+
+    select.innerHTML = '<option value="">Todas as vagas</option>';
+    (data || []).forEach((job) => {
+      const option = document.createElement('option');
+      option.value = job.id;
+      option.textContent = `${job.titulo} (${job.area})`;
+      select.appendChild(option);
+    });
+
+    if (selected) select.value = selected;
   }
 
   async function loadAdminPortfolio() {
@@ -757,6 +970,30 @@
     loadAdminData();
   };
 
+  window.toggleJobStatus = async function toggleJobStatus(id, status) {
+    if (!db) return;
+
+    const { error } = await db.from('vagas').update({ status }).eq('id', id);
+    if (error) {
+      alert(`Não foi possível atualizar a vaga: ${error.message}`);
+      return;
+    }
+
+    loadAdminData();
+  };
+
+  window.deleteJob = async function deleteJob(id) {
+    if (!db || !confirm('Excluir esta vaga? Os currículos enviados continuarão no painel com o nome da vaga.')) return;
+
+    const { error } = await db.from('vagas').delete().eq('id', id);
+    if (error) {
+      alert(`Não foi possível excluir a vaga: ${error.message}`);
+      return;
+    }
+
+    loadAdminData();
+  };
+
   window.deleteCurriculo = async function deleteCurriculo(id, encodedFilePath) {
     if (!db) return;
 
@@ -879,6 +1116,9 @@
     const reviewForm = document.querySelector('form[data-form="admin-avaliacao"]');
     if (reviewForm) reviewForm.addEventListener('submit', handleAdminReviewSubmit);
 
+    const jobForm = document.querySelector('form[data-form="admin-vaga"]');
+    if (jobForm) jobForm.addEventListener('submit', handleAdminJobSubmit);
+
     const editProjectForm = document.getElementById('edit-project-form');
     if (editProjectForm) editProjectForm.addEventListener('submit', handleEditProjectSubmit);
   }
@@ -891,6 +1131,8 @@
     loadPortfolioHighlights();
     loadFullPortfolio();
     loadTestimonials();
+    loadPublicJobs();
+    loadCurriculoJobOptions();
     protectAdmin();
   });
 })();

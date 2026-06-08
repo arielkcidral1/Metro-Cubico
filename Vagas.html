@@ -35,58 +35,15 @@
         </div>
         <div class="jobs-note reveal">
           <strong>Joinville/SC</strong>
-          <p>As vagas podem ser atualizadas conforme a demanda operacional. Cadastre seu currículo mesmo que não encontre uma vaga ideal no momento.</p>
+          <p>As vagas são publicadas pelo painel administrativo e atualizadas conforme a demanda operacional.</p>
         </div>
       </div>
     </section>
 
     <section class="jobs-board">
       <div class="container">
-        <div class="jobs-grid">
-          <article class="job-card reveal">
-            <div class="job-card-head">
-              <span class="job-tag">Operacional</span>
-              <span class="job-type">Presencial</span>
-            </div>
-            <h2>Auxiliar de Limpeza</h2>
-            <p>Atuação em rotinas de limpeza e conservação de ambientes corporativos, seguindo padrões de qualidade, segurança e uso correto de EPIs.</p>
-            <ul>
-              <li>Disponibilidade para atuar em Joinville/SC</li>
-              <li>Comprometimento com horários e processos</li>
-              <li>Experiência na função será um diferencial</li>
-            </ul>
-            <a class="btn btn-primary" href="Curriculo.html">Enviar currículo</a>
-          </article>
-
-          <article class="job-card reveal">
-            <div class="job-card-head">
-              <span class="job-tag">Jardinagem</span>
-              <span class="job-type">Presencial</span>
-            </div>
-            <h2>Auxiliar de Jardinagem</h2>
-            <p>Apoio em manutenção de jardins, conservação de áreas verdes, organização de ferramentas e execução das atividades programadas.</p>
-            <ul>
-              <li>Interesse por jardinagem e áreas verdes</li>
-              <li>Organização e cuidado com equipamentos</li>
-              <li>Conhecimento prático será um diferencial</li>
-            </ul>
-            <a class="btn btn-primary" href="Curriculo.html">Enviar currículo</a>
-          </article>
-
-          <article class="job-card reveal">
-            <div class="job-card-head">
-              <span class="job-tag">Banco de talentos</span>
-              <span class="job-type">Cadastro</span>
-            </div>
-            <h2>Cadastre seu Currículo</h2>
-            <p>Não encontrou uma vaga compatível agora? Envie seus dados para futuras oportunidades em limpeza, facilities, jardinagem e áreas administrativas.</p>
-            <ul>
-              <li>Cadastro para futuras seleções</li>
-              <li>Análise conforme novas demandas</li>
-              <li>Oportunidades em diferentes áreas</li>
-            </ul>
-            <a class="btn btn-primary" href="Curriculo.html">Enviar currículo</a>
-          </article>
+        <div class="jobs-grid" id="dynamic-jobs">
+          <div class="jobs-empty">Carregando vagas...</div>
         </div>
       </div>
     </section>
@@ -98,6 +55,9 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-lib.js"></script>
+  <script src="supabase.js"></script>
   <script src="java.js"></script>
 </body>
 </html>

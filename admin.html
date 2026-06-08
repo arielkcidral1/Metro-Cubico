@@ -41,6 +41,9 @@
     .btn-download { display: inline-flex; align-items: center; gap: 6px; background: #e6f0eb; color: #0b3b2a; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 0.85rem; }
     .btn-download:hover { background: #d0e4d9; }
     .empty-row { color: #777; text-align: center; }
+    .admin-subsection { border: 1px solid #eee; border-radius: 10px; padding: 22px; margin-bottom: 28px; background: #fcfdfd; }
+    .admin-subsection h4 { margin: 0 0 18px; color: #0b3b2a; font-size: 1.05rem; }
+    .admin-filter { display: grid; grid-template-columns: minmax(220px, 1fr) auto; gap: 14px; align-items: end; margin-bottom: 18px; }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -187,12 +190,82 @@
 
     <!-- ABA: CONSULTAR CURRÍCULOS -->
     <section id="curriculos" class="admin-section">
-      <h3>Currículos Recebidos</h3>
-      <p style="color: #666; margin-bottom: 20px;">Lista de candidatos que enviaram currículo pela página "Trabalhe Conosco".</p>
+      <div class="admin-subsection">
+        <h3>Postar Vaga de Emprego</h3>
+        <form class="admin-form" data-form="admin-vaga">
+          <div class="form-row">
+            <div class="field">
+              <label for="vaga_titulo_admin">Título da vaga</label>
+              <input type="text" id="vaga_titulo_admin" name="titulo" placeholder="Ex: Auxiliar de Limpeza" required />
+            </div>
+            <div class="field">
+              <label for="vaga_area_admin">Área</label>
+              <input type="text" id="vaga_area_admin" name="area" placeholder="Ex: Operacional" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="vaga_tipo_admin">Tipo</label>
+              <select id="vaga_tipo_admin" name="tipo" required>
+                <option value="Presencial">Presencial</option>
+                <option value="Híbrido">Híbrido</option>
+                <option value="Remoto">Remoto</option>
+                <option value="Cadastro">Cadastro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="vaga_status_admin">Status</label>
+              <select id="vaga_status_admin" name="status" required>
+                <option value="aberta">Aberta</option>
+                <option value="fechada">Fechada</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="vaga_descricao_admin">Descrição</label>
+            <textarea id="vaga_descricao_admin" name="descricao" placeholder="Descreva a vaga, atividades e perfil esperado..." required></textarea>
+          </div>
+          <div class="field">
+            <label for="vaga_requisitos_admin">Requisitos</label>
+            <textarea id="vaga_requisitos_admin" name="requisitos" placeholder="Digite um requisito por linha"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Publicar vaga</button>
+        </form>
+      </div>
+
+      <h3>Vagas Publicadas</h3>
       <table class="admin-table">
         <thead>
           <tr>
             <th>Data</th>
+            <th>Vaga</th>
+            <th>Área</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="admin-vagas-list">
+          <tr><td colspan="5" class="empty-row">Nenhuma vaga publicada.</td></tr>
+        </tbody>
+      </table>
+
+      <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+
+      <h3>Currículos Recebidos</h3>
+      <p style="color: #666; margin-bottom: 20px;">Consulte os candidatos por vaga publicada.</p>
+      <div class="admin-filter">
+        <div class="field">
+          <label for="curriculo-vaga-filter">Filtrar por vaga</label>
+          <select id="curriculo-vaga-filter" onchange="loadAdminCurriculos()">
+            <option value="">Todas as vagas</option>
+          </select>
+        </div>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Vaga</th>
             <th>Nome</th>
             <th>CPF</th>
             <th>E-mail</th>
@@ -202,7 +275,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td colspan="7" class="empty-row">Nenhum currículo recebido.</td></tr>
+          <tr><td colspan="8" class="empty-row">Nenhum currículo recebido.</td></tr>
         </tbody>
       </table>
     </section>
