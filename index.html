@@ -1,222 +1,415 @@
-﻿﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Metro Cúbico Service — Gestão de Facilities, Limpeza Corporativa, Jardinagem Corporativa e Manutenção de Jardins em Joinville/SC. Atendimento exclusivo B2B para indústrias." />
-  <meta name="theme-color" content="#0b3b2a" />
-  <title>Metro Cúbico Service | Gestão de Facilities em Joinville</title>
-
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metro Cubico Service | Facilities e Limpeza Industrial</title>
+    <meta name="description" content="Solucoes em limpeza industrial, conservacao corporativa, facilities e jardinagem corporativa para ambientes industriais e corporativos.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header id="header">
-    <div class="container nav">
-      <a href="#hero" class="brand" aria-label="Metro Cúbico Service">
-        <img src="Metro Cubico.png" alt="Logo Metro Cúbico" class="brand-logo" />
-        <div class="brand-text"><strong>Metro Cúbico</strong><small>Service</small></div>
-      </a>
-      <nav class="nav-links" aria-label="Navegação principal">
-        <a href="#servicos">Serviços</a>
-        <a href="#sobre">Empresa</a>
-        <a href="#qualidade">Qualidade</a>
-        <a href="#portfolio">Portfólio</a>
-        <a href="#trabalhe-conosco">Trabalhe conosco</a>
-        <a href="#contato">Contato</a>
-      </nav>
-      <div class="nav-actions"><a class="btn btn-primary" href="#contato">Solicitar orçamento</a></div>
-      <button class="menu-btn" onclick="openMenu()" aria-label="Abrir menu">☰</button>
-    </div>
-  </header>
-
-  <div class="mobile-menu" id="mobileMenu">
-    <button class="close-menu" onclick="closeMenu()" aria-label="Fechar menu">×</button>
-    <nav>
-      <a href="#servicos" onclick="closeMenu()">Serviços</a>
-      <a href="#sobre" onclick="closeMenu()">Empresa</a>
-      <a href="#qualidade" onclick="closeMenu()">Qualidade</a>
-      <a href="#portfolio" onclick="closeMenu()">Portfólio</a>
-      <a href="#trabalhe-conosco" onclick="closeMenu()">Trabalhe conosco</a>
-      <a href="#contato" onclick="closeMenu()">Contato</a>
-    </nav>
-  </div>
-
-  <main>
-    <section class="hero" id="hero">
-      <div class="hero-grid"></div>
-      <div class="container hero-content">
-        <div class="reveal">
-          <span class="eyebrow">Joinville • Santa Catarina</span>
-          <h1>Seu espaço, nossa paixão pelo <span>detalhe.</span></h1>
-          <p>Gestão de Facilities, limpeza e conservação corporativa, manutenção de jardins, implantação de áreas verdes e projetos de paisagismo exclusivos para o setor industrial.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#contato">Falar no WhatsApp</a>
-            <a class="btn btn-outline" href="#servicos">Conhecer serviços</a>
-          </div>
+    <header id="header">
+        <div class="container nav">
+            <a class="brand" href="#top" aria-label="Metro Cubico Service">
+                <img class="brand-logo" src="Metro Cubico.png" alt="Metro Cubico Service">
+                <span class="brand-text">
+                    <strong>Metro Cubico</strong>
+                    <small>Service</small>
+                </span>
+            </a>
+            <nav class="nav-links" aria-label="Navegacao principal">
+                <a href="#servicos">Servicos</a>
+                <a href="#diferenciais">Diferenciais</a>
+                <a href="#sobre">Empresa</a>
+                <a href="#resultados">Resultados</a>
+                <a href="#atendimento">Atendimento</a>
+                <a href="#experiencia">Experiencia</a>
+                <a href="#contato">Contato</a>
+            </nav>
+            <div class="nav-actions">
+                <a class="btn btn-outline" href="https://wa.me/5547999464635" target="_blank" rel="noopener">Solicitar orcamento</a>
+            </div>
+            <button class="menu-btn" type="button" onclick="openMenu()" aria-label="Abrir menu">☰</button>
         </div>
-        <aside class="hero-panel reveal" aria-label="Diferenciais principais">
-          <h3>Operação corporativa completa</h3>
-          <ul class="hero-list">
-            <li><span class="check">✓</span><span>Equipe CLT, uniformizada e com uso de EPIs.</span></li>
-            <li><span class="check">✓</span><span>Processos de qualidade e melhoria contínua.</span></li>
-            <li><span class="check">✓</span><span>Limpeza corporativa, jardinagem e facilities integrados.</span></li>
-            <li><span class="check">✓</span><span>Atendimento B2B exclusivo e especializado para indústrias.</span></li>
-          </ul>
-        </aside>
-      </div>
-    </section>
+    </header>
 
-    <div class="stats">
-      <div class="container stats-card reveal">
-        <div class="stat"><strong class="counter" data-target="2014">2014</strong><span>Fundação da empresa</span></div>
-        <div class="stat"><strong>100%</strong><span>Foco B2B em Indústrias</span></div>
-        <div class="stat"><strong class="counter" data-target="50">50</strong><span>Clientes satisfeitos</span></div>
-        <div class="stat"><strong>120.000m²</strong><span>De limpeza realizada</span></div>
-      </div>
+    <div class="mobile-menu" id="mobileMenu" aria-label="Menu mobile">
+        <button class="close-menu" type="button" onclick="closeMenu()" aria-label="Fechar menu">×</button>
+        <nav>
+            <a href="#servicos" onclick="closeMenu()">Servicos</a>
+            <a href="#diferenciais" onclick="closeMenu()">Diferenciais</a>
+            <a href="#sobre" onclick="closeMenu()">Empresa</a>
+            <a href="#resultados" onclick="closeMenu()">Resultados</a>
+            <a href="#atendimento" onclick="closeMenu()">Atendimento</a>
+            <a href="#experiencia" onclick="closeMenu()">Experiencia</a>
+            <a href="#contato" onclick="closeMenu()">Contato</a>
+        </nav>
     </div>
 
-    <section class="solutions" id="servicos">
-      <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <span class="eyebrow">Serviços prestados</span>
-            <h2 class="title">Para cada necessidade, uma <span>solução.</span></h2>
-          </div>
-          <p class="subtitle">Integramos limpeza, conservação, jardinagem, manutenção e gestão de projetos para transformar espaços comuns em ambientes funcionais, seguros e bem cuidados.</p>
+    <main id="top">
+        <section class="hero" style="background-image: linear-gradient(110deg,rgba(0,26,51,.94),rgba(0,26,51,.58),rgba(0,26,51,.86)), url('assets/foto1.png');">
+            <div class="hero-grid"></div>
+            <div class="container hero-content">
+                <div>
+                    <span class="eyebrow">Joinville • Santa Catarina</span>
+                    <h1>Metro Cubico <span>Service</span></h1>
+                    <p>Solucoes em limpeza industrial, conservacao corporativa, facilities e jardinagem corporativa para operacoes que exigem seguranca, qualidade e continuidade operacional.</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#contato">Solicitar orcamento</a>
+                        <a class="btn btn-outline" href="#servicos">Conhecer servicos</a>
+                    </div>
+                </div>
+                <aside class="hero-panel">
+                    <h3>Gestao integrada de servicos</h3>
+                    <ul class="hero-list">
+                        <li><span class="check">✓</span><span>Equipes fixas e dedicadas para ambientes industriais e corporativos.</span></li>
+                        <li><span class="check">✓</span><span>Planejamento operacional alinhado a rotina de cada cliente.</span></li>
+                        <li><span class="check">✓</span><span>Seguranca, qualidade e conformidade em cada etapa da operacao.</span></li>
+                    </ul>
+                </aside>
+            </div>
+        </section>
+
+        <section class="stats" aria-label="Numeros da Metro Cubico">
+            <div class="container">
+                <div class="stats-card">
+                    <div class="stat">
+                        <strong>2016</strong>
+                        <span>Fundada em</span>
+                    </div>
+                    <div class="stat">
+                        <strong>100%</strong>
+                        <span>Foco B2B em industrias</span>
+                    </div>
+                    <div class="stat">
+                        <strong>Facilities</strong>
+                        <span>Gestao integrada de servicos</span>
+                    </div>
+                    <div class="stat">
+                        <strong>Seguranca</strong>
+                        <span>Qualidade e conformidade operacional</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="solutions" id="servicos">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <span class="eyebrow">O que fazemos</span>
+                        <h2 class="title">Servicos especializados para ambientes industriais e corporativos</h2>
+                    </div>
+                    <p class="subtitle">A Metro Cubico oferece solucoes integradas de limpeza industrial, conservacao corporativa, facilities, implantacao e manutencao de areas verdes.</p>
+                </div>
+                <div class="cards">
+                    <article class="service reveal">
+                        <div class="service-img" style="background-image:url('assets/foto2.png')"></div>
+                        <div class="service-body">
+                            <h3>Limpeza Industrial</h3>
+                            <p>Limpeza tecnica e mecanizada para areas produtivas, galpoes, centros logisticos e ambientes operacionais.</p>
+                        </div>
+                    </article>
+                    <article class="service reveal">
+                        <div class="service-img" style="background-image:url('assets/foto3.png')"></div>
+                        <div class="service-body">
+                            <h3>Facilities</h3>
+                            <p>Gestao integrada de servicos de apoio para manter a rotina corporativa organizada, continua e eficiente.</p>
+                        </div>
+                    </article>
+                    <article class="service reveal">
+                        <div class="service-img" style="background-image:url('assets/foto4.png')"></div>
+                        <div class="service-body">
+                            <h3>Conservacao Corporativa</h3>
+                            <p>Conservacao de areas administrativas, escritorios, recepcoes, auditorios e centros educativos.</p>
+                        </div>
+                    </article>
+                    <article class="service reveal">
+                        <div class="service-img" style="background-image:url('assets/foto5.png')"></div>
+                        <div class="service-body">
+                            <h3>Jardinagem Corporativa</h3>
+                            <p>Implantacao, manutencao e cuidado de areas verdes em ambientes corporativos e industriais.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="about" id="sobre">
+            <div class="container about-grid">
+                <div class="photo-stack reveal">
+                    <div class="photo-main" style="background-image:url('assets/foto1.png')"></div>
+                    <div class="photo-small" style="background-image:url('assets/foto5.png')"></div>
+                    <div class="badge"><span>2016</span>desde</div>
+                </div>
+                <div class="about-text reveal">
+                    <span class="eyebrow">Sobre a Metro Cubico</span>
+                    <h2 class="title">Mais de uma decada desenvolvendo solucoes para ambientes corporativos e industriais.</h2>
+                    <p>Desde 2016, a Metro Cubico atua no desenvolvimento de solucoes personalizadas para empresas que precisam manter ambientes limpos, seguros, organizados e alinhados as exigencias operacionais.</p>
+                    <p>Nosso trabalho combina equipes dedicadas, supervisao proxima, equipamentos profissionais e planejamento sob medida para cada operacao.</p>
+                    <div class="values">
+                        <div class="value">
+                            <h4>Planejamento</h4>
+                            <p>Rotinas definidas conforme a necessidade de cada ambiente.</p>
+                        </div>
+                        <div class="value">
+                            <h4>Continuidade</h4>
+                            <p>Equipes preparadas para manter a operacao fluindo todos os dias.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dark" id="diferenciais">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <span class="eyebrow">Diferenciais</span>
+                        <h2 class="title">Estrutura, tecnologia e gestao para operacoes exigentes</h2>
+                    </div>
+                    <p class="subtitle">Atuamos com padrao operacional, acompanhamento continuo e recursos adequados para ambientes de alta responsabilidade.</p>
+                </div>
+                <div class="diff-grid">
+                    <article class="diff reveal">
+                        <strong>01</strong>
+                        <h3>Automacao de Rocada</h3>
+                        <p>Robos autonomos para ganho de eficiencia, padronizacao e seguranca na manutencao de areas verdes.</p>
+                    </article>
+                    <article class="diff reveal">
+                        <strong>02</strong>
+                        <h3>Equipe Treinada</h3>
+                        <p>Gestao operacional com profissionais capacitados para rotinas industriais e corporativas.</p>
+                    </article>
+                    <article class="diff reveal">
+                        <strong>03</strong>
+                        <h3>Equipamentos Profissionais</h3>
+                        <p>Maquinas, ferramentas e insumos adequados para cada ambiente e nivel de exigencia.</p>
+                    </article>
+                    <article class="diff reveal">
+                        <strong>04</strong>
+                        <h3>Gestao Personalizada da Operacao</h3>
+                        <p>Planos de atendimento ajustados a realidade de cada cliente, com supervisao e indicadores claros.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="quality" id="resultados">
+            <div class="container quality-grid">
+                <div class="reveal">
+                    <span class="eyebrow">Processo</span>
+                    <h2 class="title">Como garantimos resultados consistentes</h2>
+                    <p class="subtitle">Solucoes planejadas, equipes acompanhadas e execucao padronizada para reduzir riscos, aumentar previsibilidade e manter a operacao em conformidade.</p>
+                    <div class="quality-list">
+                        <div class="quality-item">
+                            <span class="check">✓</span>
+                            <p><strong>Planejamento Sob Medida</strong><br>Analise do ambiente, rotina operacional e necessidades de cada contrato.</p>
+                        </div>
+                        <div class="quality-item">
+                            <span class="check">✓</span>
+                            <p><strong>Seguranca e Conformidade</strong><br>Procedimentos alinhados as exigencias de seguranca e qualidade.</p>
+                        </div>
+                        <div class="quality-item">
+                            <span class="check">✓</span>
+                            <p><strong>Gestao Operacional Ativa</strong><br>Supervisao, acompanhamento e ajustes continuos na rotina de atendimento.</p>
+                        </div>
+                        <div class="quality-item">
+                            <span class="check">✓</span>
+                            <p><strong>Equipamentos e Tecnologia</strong><br>Uso de recursos profissionais para eficiencia, padrao e produtividade.</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="quality-card reveal">
+                    <h3>Operacoes mais limpas, seguras e organizadas.</h3>
+                    <p>Um modelo de trabalho pensado para empresas que dependem de ambientes bem cuidados para manter produtividade, imagem e continuidade operacional.</p>
+                </aside>
+            </div>
+        </section>
+
+        <section class="segments" id="atendimento">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <span class="eyebrow">Modelo de Atendimento</span>
+                        <h2 class="title">Equipes fixas e dedicadas para a rotina da sua operacao</h2>
+                    </div>
+                    <p class="subtitle">Atuamos com equipes fixas, dedicadas e supervisionadas para garantir previsibilidade, padronizacao e aderencia ao ambiente de cada cliente.</p>
+                </div>
+                <div class="segment-grid">
+                    <div class="segment reveal">Equipe Fixa</div>
+                    <div class="segment reveal">Supervisao Continua</div>
+                    <div class="segment reveal">Planejamento Personalizado</div>
+                    <div class="segment reveal">Padronizacao</div>
+                    <div class="segment reveal">Seguranca</div>
+                    <div class="segment reveal">Tecnologia</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="portfolio" id="experiencia">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <span class="eyebrow">Experiencia</span>
+                        <h2 class="title">Experiencia em ambientes de alta exigencia</h2>
+                    </div>
+                    <p class="subtitle">Conhecimento pratico para atuar em espacos industriais e corporativos que demandam cuidado tecnico, seguranca e continuidade.</p>
+                </div>
+                <div class="cards">
+                    <article class="service reveal">
+                        <div class="service-img" style="background-image:url('assets/foto2.png')"></div>
+                        <div class="service-body">
+                            <h3>Centrais de Residuos e Cavacos</h3>
+                            <p>Atuacao em areas criticas com planejamento, controle e padrao operacional.</p>
+                        </div>
+                    </article>
+                    <article class="service reveal">
+                        <div class="service-body">
+                            <h3>Fundicoes</h3>
+                            <p>Rotinas de limpeza e conservacao para ambientes produtivos de alta demanda.</p>
+                        </div>
+                    </article>
+                    <article class="service reveal">
+                        <div class="service-body">
+                            <h3>Usinagem</h3>
+                            <p>Atendimento especializado para areas tecnicas, produtivas e de apoio.</p>
+                        </div>
+                    </article>
+                    <article class="service reveal">
+                        <div class="service-body">
+                            <h3>Almoxarifados e Expedicao</h3>
+                            <p>Organizacao, conservacao e limpeza para fluxos logisticos e operacionais.</p>
+                        </div>
+                    </article>
+                    <article class="service reveal">
+                        <div class="service-body">
+                            <h3>Areas Administrativas</h3>
+                            <p>Conservacao corporativa para escritorios, recepcoes, auditorios e salas de apoio.</p>
+                        </div>
+                    </article>
+                    <article class="service reveal">
+                        <div class="service-body">
+                            <h3>Areas Externas e Jardins Corporativos</h3>
+                            <p>Manutencao de areas verdes, jardins, acessos externos e ambientes de circulacao.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact" id="contato">
+            <div class="container contact-grid">
+                <div class="contact-info reveal">
+                    <span class="eyebrow">Contato</span>
+                    <h3>Vamos estruturar uma solucao para sua operacao?</h3>
+                    <p>Fale com a Metro Cubico e conte com um time preparado para avaliar seu ambiente, propor rotinas e dimensionar equipes dedicadas.</p>
+                    <div class="contact-line">
+                        <span>WhatsApp</span>
+                        <a href="https://wa.me/5547999464635" target="_blank" rel="noopener">(47) 99946-4635</a><br>
+                        <a href="https://wa.me/5547999702660" target="_blank" rel="noopener">(47) 99970-2660</a>
+                    </div>
+                    <div class="contact-line">
+                        <span>E-mail</span>
+                        <a href="mailto:comercial@metrocubicoservice.com">comercial@metrocubicoservice.com</a>
+                    </div>
+                    <div class="contact-line">
+                        <span>Endereco</span>
+                        <p>Rua Anita Garibaldi, 2300<br>Anita Garibaldi, Joinville/SC</p>
+                    </div>
+                </div>
+
+                <div class="form-wrap reveal">
+                    <div class="form-intro">
+                        <span class="eyebrow">Solicite uma avaliacao da sua operacao</span>
+                        <h3>Desenvolvemos solucoes personalizadas para ambientes corporativos e industriais com equipes dedicadas, planejamento operacional e foco em resultados.</h3>
+                    </div>
+                    <form class="form" onsubmit="sendForm(event)">
+                        <div class="form-row">
+                            <div class="field">
+                                <label for="nome">Nome</label>
+                                <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+                            </div>
+                            <div class="field">
+                                <label for="empresa">Empresa</label>
+                                <input type="text" id="empresa" name="empresa" placeholder="Nome da empresa" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="field">
+                                <label for="telefone">Telefone</label>
+                                <input type="tel" id="telefone" name="telefone" placeholder="(47) 00000-0000" required>
+                            </div>
+                            <div class="field">
+                                <label for="email">E-mail</label>
+                                <input type="email" id="email" name="email" placeholder="seu@email.com">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="servico">Servico de interesse</label>
+                            <select id="servico" name="servico" required>
+                                <option value="">Selecione</option>
+                                <option>Limpeza industrial</option>
+                                <option>Conservacao corporativa</option>
+                                <option>Facilities</option>
+                                <option>Jardinagem corporativa</option>
+                                <option>Automacao de rocada</option>
+                                <option>Outro</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="mensagem">Mensagem</label>
+                            <textarea id="mensagem" name="mensagem" placeholder="Conte um pouco sobre sua necessidade"></textarea>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Solicitar orcamento</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <a class="whatsapp" href="https://wa.me/5547999464635" target="_blank" rel="noopener" aria-label="Falar com a Metro Cubico no WhatsApp">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M19.11 17.24c-.29-.15-1.72-.85-1.99-.95-.27-.1-.46-.15-.66.15-.19.29-.76.95-.93 1.14-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.34-1.44-.86-.77-1.45-1.72-1.62-2.01-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.49.1-.19.05-.37-.02-.51-.07-.15-.66-1.59-.9-2.18-.24-.57-.48-.49-.66-.5h-.56c-.19 0-.51.07-.78.37-.27.29-1.02 1-1.02 2.43s1.05 2.82 1.19 3.01c.15.19 2.06 3.14 4.99 4.41.7.3 1.24.48 1.66.61.7.22 1.34.19 1.84.12.56-.08 1.72-.7 1.97-1.39.24-.68.24-1.26.17-1.39-.07-.12-.27-.19-.56-.34z"/><path d="M16.02 3C8.84 3 3 8.78 3 15.9c0 2.28.6 4.5 1.75 6.45L3 29l6.84-1.78a13.08 13.08 0 0 0 6.18 1.55C23.2 28.77 29 23 29 15.9S23.2 3 16.02 3zm0 23.57c-2.05 0-4.05-.55-5.8-1.59l-.42-.25-4.06 1.06 1.08-3.92-.27-.43a10.64 10.64 0 0 1-1.63-5.54c0-5.91 4.86-10.72 10.83-10.72 5.97 0 10.83 4.81 10.83 10.72 0 5.91-4.86 10.67-10.56 10.67z"/></svg>
+    </a>
+
+    <footer>
+        <div class="container footer-grid">
+            <div>
+                <h3>Metro Cubico Service</h3>
+                <p>Solucoes em limpeza industrial, conservacao corporativa, facilities e jardinagem corporativa para operacoes que exigem seguranca, qualidade e continuidade operacional.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Servicos</h4>
+                <a href="#servicos">Limpeza industrial</a>
+                <a href="#servicos">Conservacao corporativa</a>
+                <a href="#servicos">Facilities</a>
+                <a href="#servicos">Jardinagem corporativa</a>
+            </div>
+            <div class="footer-col">
+                <h4>Empresa</h4>
+                <a href="#sobre">Sobre nos</a>
+                <a href="#diferenciais">Diferenciais</a>
+                <a href="#resultados">Resultados</a>
+                <a href="#experiencia">Experiencia</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contato</h4>
+                <a href="mailto:comercial@metrocubicoservice.com">comercial@metrocubicoservice.com</a>
+                <a href="https://wa.me/5547999464635" target="_blank" rel="noopener">(47) 99946-4635</a>
+                <a href="https://wa.me/5547999702660" target="_blank" rel="noopener">(47) 99970-2660</a>
+            </div>
         </div>
-        <div class="cards">
-          <article class="service reveal">
-            <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80')"></div>
-            <div class="service-body"><h3>Limpeza Corporativa</h3><p>Serviços especializados conforme a necessidade de cada empresa, com equipe qualificada, foco em qualidade e redução de custos.</p><a href="#contato">Solicitar proposta →</a></div>
-          </article>
-          <article class="service reveal">
-            <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=900&q=80')"></div>
-            <div class="service-body"><h3>Jardinagem Corporativa</h3><p>Execução, manutenção e gestão de jardins corporativos com equipamentos dedicados, cronogramas e fiscalização operacional.</p><a href="#contato">Solicitar proposta →</a></div>
-          </article>
-          <article class="service reveal">
-            <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80')"></div>
-            <div class="service-body"><h3>Facilities Integrado</h3><p>Gestão centralizada de rotinas operacionais para complexos industriais, parques fabris e centros logísticos.</p><a href="#contato">Solicitar proposta →</a></div>
-          </article>
-          <article class="service reveal">
-            <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80')"></div>
-            <div class="service-body"><h3>Manutenção de Jardins</h3><p>Mapeamento de áreas, definição de equipamentos, cronoanálise, cronograma de atividades e ciclo PDCA aplicado à operação.</p><a href="#contato">Solicitar proposta →</a></div>
-          </article>
-          <article class="service reveal">
-            <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80')"></div>
-            <div class="service-body"><h3>Projetos de Paisagismo</h3><p>Projetos paisagísticos para áreas industriais e galpões logísticos com apresentações, desenvolvimento técnico e integração ambiental.</p><a href="#portfolio">Ver portfólio →</a></div>
-          </article>
-          <article class="service reveal">
-            <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=900&q=80')"></div>
-            <div class="service-body"><h3>Gestão de Projetos</h3><p>Gerenciamento focado em qualidade, produtividade, segurança, redução de custos e melhoria contínua dos processos.</p><a href="#contato">Solicitar proposta →</a></div>
-          </article>
+        <div class="container footer-bottom">
+            <span>© 2026 Metro Cubico Service. Todos os direitos reservados.</span>
+            <span>Joinville/SC</span>
         </div>
-      </div>
-    </section>
+    </footer>
 
-    <section class="about" id="sobre">
-      <div class="container about-grid">
-        <div class="photo-stack reveal"><div class="photo-main"></div><div class="photo-small"></div><div class="badge"><div><span>10+</span>anos de trajetória</div></div></div>
-        <div class="about-text reveal">
-          <span class="eyebrow">Sobre a Metro Cúbico</span>
-          <h2 class="title">Uma empresa multidisciplinar com visão <span>industrial.</span></h2>
-          <p>A Metro Cúbico nasceu em 2014 para suprir uma necessidade de mercado: oferecer serviços corporativos com conceitos industriais, ferramentas de gestão e foco real na excelência operacional das empresas e seus colaboradores.</p>
-          <p>Atuamos exclusivamente no modelo B2B, entregando limpeza corporativa, conservação, projetos de arquitetura paisagística, implantação e manutenção de jardins com alto rigor técnico para grandes indústrias.</p>
-          <div class="values">
-            <div class="value"><h4>Visão</h4><p>Ser uma empresa referência no segmento onde atua.</p></div>
-            <div class="value"><h4>Missão</h4><p>Gerar ambientes que integram a natureza à sociedade, promovendo soluções criativas, seguras e harmônicas.</p></div>
-            <div class="value"><h4>Valores</h4><p>Transparência, amor no trabalho, inovação sustentável e respeito com a natureza.</p></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="dark">
-      <div class="container">
-        <div class="section-head reveal"><div><span class="eyebrow">Diferenciais</span><h2 class="title">Por que escolher a <span>Metro Cúbico?</span></h2></div><p class="subtitle">Conhecimento teórico, técnico e prático aplicado ao campo para entregar resultados consistentes.</p></div>
-        <div class="diff-grid">
-          <div class="diff reveal"><strong>01</strong><h3>Equipe multidisciplinar</h3><p>Profissionais de arquitetura, design, agrícola, administração, eletrotécnica, mecânica, segurança do trabalho, engenharia e gestão.</p></div>
-          <div class="diff reveal"><strong>02</strong><h3>Segurança do trabalho</h3><p>Funcionários registrados, ASO, EPIs e atuação alinhada às normas NR01, NR06, NR12, NR18, NR20, NR31 e NR35.</p></div>
-          <div class="diff reveal"><strong>03</strong><h3>Gestão por processos</h3><p>Mapeamento de áreas, cronoanálise, cronogramas, fiscalização e ciclo PDCA para rotinas de manutenção e facilities.</p></div>
-          <div class="diff reveal"><strong>04</strong><h3>Produtos e equipamentos</h3><p>Uso de equipamentos e produtos profissionais com busca constante por melhoria contínua.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="quality" id="qualidade">
-      <div class="container quality-grid">
-        <div class="reveal"><span class="eyebrow">Qualidade e segurança</span><h2 class="title">Processos padronizados e compromisso com a <span>excelência.</span></h2><div class="quality-list"><div class="quality-item"><span class="check">✓</span><p>Prestar serviço corporativo de qualidade.</p></div><div class="quality-item"><span class="check">✓</span><p>Buscar a melhoria contínua dos processos.</p></div><div class="quality-item"><span class="check">✓</span><p>Capacitar os colaboradores.</p></div><div class="quality-item"><span class="check">✓</span><p>Gerar satisfação por meio do atendimento dos requisitos aplicáveis.</p></div></div></div>
-        <div class="quality-card reveal"><div class="iso"><strong>B2B</strong><span>Indústria</span><p>Atendimento exclusivo ao setor industrial, reforçando o compromisso com a padronização, segurança e o rigor técnico exigido pelas grandes operações.</p></div></div>
-      </div>
-    </section>
-
-    <section class="segments">
-      <div class="container">
-        <div class="section-head reveal"><div><span class="eyebrow">Segmentos atendidos</span><h2 class="title">Atuação focada no setor <span>industrial.</span></h2></div><p class="subtitle">A Metro Cúbico atende indústrias e parques fabris com demandas rigorosas de limpeza, conservação, manutenção e áreas verdes.</p></div>
-        <div class="segment-grid reveal"><div class="segment">Parques Fabris</div><div class="segment">Complexos Industriais</div><div class="segment">Centros Logísticos</div><div class="segment">Áreas Externas</div><div class="segment">Áreas Administrativas</div><div class="segment">Galpões</div></div>
-      </div>
-    </section>
-
-    <section class="portfolio" id="portfolio">
-      <div class="container">
-        <div class="section-head reveal"><div><span class="eyebrow">Portfólio</span><h2 class="title">Projetos que valorizam <span>espaços.</span></h2></div><p class="subtitle">Estrutura preparada para apresentar projetos de jardins industriais, áreas verdes fabris e grandes operações de facilities.</p></div>
-        <div class="portfolio-grid" id="dynamic-portfolio-highlights"></div>
-        <div class="reveal" style="text-align: center; margin-top: 44px;">
-          <a href="portfolio.html" class="btn btn-outline" style="color: var(--green-900); border-color: var(--line); border-width: 2px;">Ver todos os projetos</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="testimonials">
-      <div class="container">
-        <div class="section-head reveal"><div><span class="eyebrow">Reputação</span><h2 class="title">Relacionamentos construídos com <span>confiança.</span></h2></div></div>
-        <div class="testimonial-grid" id="dynamic-testimonials"></div>
-      </div>
-    </section>
-    <section class="careers" id="trabalhe-conosco">
-      <div class="container career-box">
-        <div class="reveal"><span class="eyebrow">Trabalhe conosco</span><h2 class="title">Faça parte de uma equipe que entrega <span>excelência.</span></h2><p class="subtitle">Buscamos profissionais comprometidos com segurança, qualidade, produtividade e cuidado com os ambientes.</p><a class="btn btn-light career-cta" href="Vagas.html">Ver vagas</a></div>
-        <ul class="career-list reveal"><li>Equipe registrada e uniformizada</li><li>Uso de EPIs e normas de segurança</li><li>Treinamentos e capacitação contínua</li><li>Ambiente com gestão e processos definidos</li></ul>
-      </div>
-    </section>
-
-    <section class="contact" id="contato">
-      <div class="container contact-grid">
-        <aside class="contact-info reveal"><h3>Informações de contato</h3><div class="contact-line"><span>Endereço</span><a href="https://www.google.com/maps/search/?api=1&query=Rua%20Anita%20Garibaldi%2C%202300%2C%20Anita%20Garibaldi%2C%20Joinville%2C%20SC" target="_blank" rel="noopener">Rua Anita Garibaldi, 2300<br>Anita Garibaldi, Joinville/SC</a></div><div class="contact-line"><span>E-mail</span><a href="mailto:comercial@metrocubicoservice.com">comercial@metrocubicoservice.com</a></div><div class="contact-line"><span>WhatsApp</span><a href="https://wa.me/5547999464635" target="_blank" rel="noopener">(47) 99946-4635</a><br><a href="https://wa.me/5547999702660" target="_blank" rel="noopener">(47) 99970-2660</a></div><div class="contact-line"><span>Instagram</span><a href="https://www.instagram.com/m3_paisagismo/" target="_blank" rel="noopener">Metro_Cubico</a></div><div class="contact-line"><span>Funcionamento</span><p>Dias úteis: 8h às 17h<br>Sábado: com agendamento</p></div></aside>
-        <form class="form reveal" onsubmit="sendForm(event)">
-          <div class="form-row"><div class="field"><label for="nome">Nome</label><input id="nome" name="nome" type="text" placeholder="Seu nome completo" required /></div><div class="field"><label for="empresa">Empresa</label><input id="empresa" name="empresa" type="text" placeholder="Nome da empresa" /></div></div>
-          <div class="form-row"><div class="field"><label for="telefone">Telefone</label><input id="telefone" name="telefone" type="tel" placeholder="(47) 9 0000-0000" required /></div><div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" placeholder="seu@email.com" /></div></div>
-          <div class="field"><label for="servico">Serviço desejado</label><select id="servico" name="servico"><option>Limpeza Corporativa</option><option>Jardinagem Corporativa</option><option>Manutenção de Jardins</option><option>Facilities Integrado</option><option>Projetos de Paisagismo</option><option>Gestão de Projetos</option><option>Outro</option></select></div>
-          <div class="field"><label for="mensagem">Mensagem</label><textarea id="mensagem" name="mensagem" placeholder="Descreva brevemente o que você precisa..."></textarea></div>
-          <button class="btn btn-primary" type="submit">Enviar pelo WhatsApp</button>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div><h3>Metro Cúbico Service</h3><p>Gestão de Facilities, limpeza corporativa, jardinagem e manutenção de jardins em Joinville/SC. Atendimento exclusivo B2B para indústrias.</p></div>
-        <div class="footer-col"><h4>Serviços</h4><a href="#servicos">Limpeza Corporativa</a><a href="#servicos">Jardinagem</a><a href="#servicos">Facilities</a><a href="#servicos">Paisagismo</a></div>
-        <div class="footer-col"><h4>Empresa</h4><a href="#sobre">Sobre nós</a><a href="#qualidade">Qualidade</a><a href="#portfolio">Portfólio</a><a href="#trabalhe-conosco">Trabalhe conosco</a></div>
-        <div class="footer-col"><h4>Contato</h4><a href="mailto:comercial@metrocubicoservice.com">comercial@metrocubicoservice.com</a><a href="https://wa.me/5547999464635" target="_blank" rel="noopener">(47) 99946-4635</a><a href="https://wa.me/5547999702660" target="_blank" rel="noopener">(47) 99970-2660</a></div>
-      </div>
-      <div class="footer-bottom"><span>© 2026 Metro Cúbico Service - CNPJ 26.229.722/0001-06</span><span>Joinville • Santa Catarina</span></div>
-    </div>
-  </footer>
-
-  <a class="whatsapp" href="https://wa.me/5547999464635?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
-    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
-  </a>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-lib.js"></script>
-  <script src="supabase.js"></script>
-  <script src="java.js"></script>
+    <script src="supabase-lib.js"></script>
+    <script src="supabase.js"></script>
+    <script src="java.js"></script>
 </body>
 </html>
