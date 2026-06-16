@@ -60,7 +60,7 @@
     header.scrolled .nav-links a::after{background:var(--blue-600)}
     .nav-actions{display:flex;align-items:center;gap:12px}
     .menu-btn{display:none;background:none;border:0;color:var(--blue-900);font-size:30px;cursor:pointer}
-    header .btn-outline{color:white;border-color:var(--blue-600);background:var(--blue-600);backdrop-filter:none;box-shadow:0 12px 28px rgba(0,64,111,.24);padding:13px 22px}
+    header .btn-outline{color:white;border-color:var(--blue-600);background:var(--blue-600);backdrop-filter:none;box-shadow:0 12px 28px rgba(0,64,111,.24);padding:13px 24px;white-space:nowrap;min-width:max-content}
     header .btn-outline:hover{background:var(--blue-800);border-color:var(--blue-800);color:white;transform:translateY(-2px)}
 
     .hero{min-height:100vh;position:relative;display:grid;align-items:end;padding:140px 0 70px;color:white;background:linear-gradient(110deg,rgba(0,26,51,.94),rgba(0,26,51,.62),rgba(0,26,51,.86)),url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;overflow:hidden}
