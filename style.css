@@ -63,7 +63,7 @@
     header .btn-outline{color:white;border-color:var(--blue-600);background:var(--blue-600);backdrop-filter:none;box-shadow:0 12px 28px rgba(0,64,111,.24);padding:13px 24px;white-space:nowrap;min-width:max-content}
     header .btn-outline:hover{background:var(--blue-800);border-color:var(--blue-800);color:white;transform:translateY(-2px)}
 
-    .hero{min-height:100vh;position:relative;display:grid;align-items:end;padding:140px 0 70px;color:white;background:linear-gradient(110deg,rgba(0,26,51,.94),rgba(0,26,51,.62),rgba(0,26,51,.86)),url('assets/1AB9BF65-A113-4845-B029-20AECD5B6CAF.PNG') center/cover no-repeat;overflow:hidden}
+    .hero{min-height:100vh;position:relative;display:grid;align-items:end;padding:140px 0 70px;color:white;background-image:linear-gradient(110deg,rgba(0,26,51,.94),rgba(0,26,51,.62),rgba(0,26,51,.86)),url('assets/Foto Hero.PNG');background-size:cover;background-position:center 62%;background-repeat:no-repeat;overflow:hidden}
     .hero:after{content:'';position:absolute;inset:auto 0 0;height:180px;background:linear-gradient(transparent,var(--cream));pointer-events:none}
     .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:76px 76px;mask-image:linear-gradient(90deg,black,transparent)}
     .hero-content{position:relative;z-index:1;display:grid;grid-template-columns:1.08fr .92fr;gap:60px;align-items:end}
