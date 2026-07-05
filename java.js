@@ -110,7 +110,7 @@
     { src: 'central_de_residuos.png', size: 'contain', position: 'right center' }, // Central de Residuos
     { src: 'central_de_cavacos.png', size: 'contain', position: 'right center' }, // Central de Cavacos
     { src: 'Fundicao.png', size: 'contain', position: 'right center' }, // Fundicoes
-    { src: 'Usinagem.png', size: 'contain', position: 'right center' }, // Usinagem
+    { src: 'Usinagem.png', size: '140% auto', position: 'right center' }, // Usinagem
     null  // Areas Externas e Jardins Corporativos
   ];
 
