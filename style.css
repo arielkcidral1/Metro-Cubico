@@ -96,7 +96,16 @@
     #experiencia .service-body{padding:28px}
     #experiencia .service-body h3{font-size:23px}
     #experiencia .service-body p{font-size:15px}
-    #experiencia .cards{grid-template-columns:repeat(3,1fr)}
+
+    .exp-carousel{position:relative;display:flex;align-items:center;gap:14px}
+    .exp-carousel-viewport{overflow:hidden;flex:1;width:100%}
+    .exp-carousel-track{display:flex;flex-wrap:nowrap;gap:22px;transition:transform .45s ease}
+    .exp-carousel-track .service{flex:0 0 calc((100% - 44px)/3);min-width:0}
+    .exp-carousel-btn{flex:0 0 auto;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:white;color:var(--blue-900);font-size:22px;cursor:pointer;display:grid;place-items:center;box-shadow:0 10px 24px rgba(0,0,0,.06);transition:.2s ease;z-index:3}
+    .exp-carousel-btn:hover{background:var(--blue-600);color:white;transform:scale(1.06)}
+    .exp-carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:26px}
+    .exp-carousel-dots span{width:9px;height:9px;border-radius:50%;background:var(--line);cursor:pointer;transition:.2s ease}
+    .exp-carousel-dots span.active{background:var(--blue-600);width:24px;border-radius:6px}
 
     .service-carousel{position:relative;height:220px;background:var(--blue-950);overflow:hidden}
     .carousel-track{display:flex;height:100%;transition:transform .4s ease}
@@ -160,5 +169,5 @@
 
     .reveal{opacity:0;transform:translateY(28px);transition:.75s ease}.reveal.visible{opacity:1;transform:translateY(0)}
 
-    @media(max-width:980px){.nav-links,.nav-actions{display:none}.menu-btn{display:block}.hero-content,.about-grid,.quality-grid,.career-box,.contact-grid,.jobs-hero-grid{grid-template-columns:1fr}.hero-panel{display:none}.stats-card{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr 1fr}#experiencia .cards{grid-template-columns:1fr 1fr}.diff-grid{grid-template-columns:1fr 1fr}.segment-grid{grid-template-columns:repeat(3,1fr)}.portfolio-grid{grid-template-columns:1fr 1fr}.jobs-grid{grid-template-columns:1fr 1fr}.work:first-child{grid-row:auto}.testimonial-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.contact-info{position:static}.curriculo-sidebar{position:static;top:auto}.curriculo-back{margin-bottom:28px}.photo-stack{min-height:420px}}
-    @media(max-width:640px){.container{width:min(100% - 28px,1180px)}section{padding:78px 0}.hero{min-height:100vh;padding:146px 0 60px}.jobs-hero{padding:120px 0 60px}.hero-actions,.section-head{display:block}.btn{width:100%;margin-top:10px}.stats-card,.cards,.diff-grid,.segment-grid,.portfolio-grid,.portfolio-page-grid,.form-row,.footer-grid,.jobs-grid,#experiencia .cards{grid-template-columns:1fr}.job-card .btn{align-self:stretch}.stat{border-right:0;border-bottom:1px solid var(--line)}.photo-stack{min-height:360px}.photo-main{inset:0 0 90px 0}.photo-small{width:74%;height:190px}.badge{width:100px;height:100px;right:4px}.quality-card{min-height:300px;padding:28px}.quality-card h3{font-size:26px}.contact-info,.form{padding:24px}.curriculo-back-btn{margin-top:0}}
+    @media(max-width:980px){.nav-links,.nav-actions{display:none}.menu-btn{display:block}.hero-content,.about-grid,.quality-grid,.career-box,.contact-grid,.jobs-hero-grid{grid-template-columns:1fr}.hero-panel{display:none}.stats-card{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr 1fr}.exp-carousel-track .service{flex:0 0 calc((100% - 22px)/2)}.diff-grid{grid-template-columns:1fr 1fr}.segment-grid{grid-template-columns:repeat(3,1fr)}.portfolio-grid{grid-template-columns:1fr 1fr}.jobs-grid{grid-template-columns:1fr 1fr}.work:first-child{grid-row:auto}.testimonial-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.contact-info{position:static}.curriculo-sidebar{position:static;top:auto}.curriculo-back{margin-bottom:28px}.photo-stack{min-height:420px}}
+    @media(max-width:640px){.container{width:min(100% - 28px,1180px)}section{padding:78px 0}.hero{min-height:100vh;padding:146px 0 60px}.jobs-hero{padding:120px 0 60px}.hero-actions,.section-head{display:block}.btn{width:100%;margin-top:10px}.stats-card,.cards,.diff-grid,.segment-grid,.portfolio-grid,.portfolio-page-grid,.form-row,.footer-grid,.jobs-grid{grid-template-columns:1fr}.exp-carousel-track .service{flex:0 0 100%}.exp-carousel-btn{width:38px;height:38px;font-size:18px}.job-card .btn{align-self:stretch}.stat{border-right:0;border-bottom:1px solid var(--line)}.photo-stack{min-height:360px}.photo-main{inset:0 0 90px 0}.photo-small{width:74%;height:190px}.badge{width:100px;height:100px;right:4px}.quality-card{min-height:300px;padding:28px}.quality-card h3{font-size:26px}.contact-info,.form{padding:24px}.curriculo-back-btn{margin-top:0}}

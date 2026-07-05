@@ -165,5 +165,91 @@
     setupRevealAnimations();
     setupPhoneMask();
     setupCarousels();
+    setupExpCarousel();
   });
+
+  // ==========================================================
+  // CARROSSEL DE BLOCOS - secao Experiencia
+  // ==========================================================
+  let expIndex = 0;
+
+  function getExpVisibleCount() {
+    if (window.innerWidth <= 640) return 1;
+    if (window.innerWidth <= 980) return 2;
+    return 3;
+  }
+
+  function getExpTotal() {
+    const track = document.getElementById('expCarouselTrack');
+    return track ? track.children.length : 0;
+  }
+
+  function getExpMaxIndex() {
+    const total = getExpTotal();
+    const visible = getExpVisibleCount();
+    return Math.max(0, total - visible);
+  }
+
+  function renderExpDots() {
+    const dotsWrap = document.getElementById('expCarouselDots');
+    if (!dotsWrap) return;
+    const maxIndex = getExpMaxIndex();
+    const count = maxIndex + 1;
+
+    dotsWrap.innerHTML = Array.from({ length: count })
+      .map((_, i) => `<span class="${i === expIndex ? 'active' : ''}" data-index="${i}"></span>`)
+      .join('');
+
+    dotsWrap.querySelectorAll('span').forEach((dot) => {
+      dot.addEventListener('click', () => {
+        expIndex = parseInt(dot.dataset.index, 10);
+        updateExpCarousel();
+      });
+    });
+  }
+
+  function updateExpCarousel() {
+    const track = document.getElementById('expCarouselTrack');
+    if (!track) return;
+
+    const maxIndex = getExpMaxIndex();
+    expIndex = Math.min(Math.max(expIndex, 0), maxIndex);
+
+    const card = track.children[0];
+    if (!card) return;
+
+    const cardWidth = card.getBoundingClientRect().width;
+    const gap = parseFloat(getComputedStyle(track).gap || '22');
+    const offset = expIndex * (cardWidth + gap);
+
+    track.style.transform = `translateX(-${offset}px)`;
+
+    const dotsWrap = document.getElementById('expCarouselDots');
+    if (dotsWrap) {
+      dotsWrap.querySelectorAll('span').forEach((dot, i) => {
+        dot.classList.toggle('active', i === expIndex);
+      });
+    }
+  }
+
+  window.expCarouselMove = function expCarouselMove(direction) {
+    const maxIndex = getExpMaxIndex();
+    expIndex = Math.min(Math.max(expIndex + direction, 0), maxIndex);
+    updateExpCarousel();
+  };
+
+  function setupExpCarousel() {
+    if (!document.getElementById('expCarouselTrack')) return;
+    renderExpDots();
+    updateExpCarousel();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        renderExpDots();
+        updateExpCarousel();
+      }, 150);
+    });
+  }
 })();
