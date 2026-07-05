@@ -95,18 +95,19 @@
   // CARROSSEL DE EXPERIENCIA (estilo hero com vidro)
   // ==========================================================
   // Para definir a imagem de fundo de cada slide, preencha o
-  // array abaixo com o caminho do arquivo, na mesma ordem dos
-  // slides no HTML:
+  // array abaixo, na mesma ordem dos slides no HTML:
   // 1) Central de Residuos
   // 2) Central de Cavacos
   // 3) Fundicoes
   // 4) Usinagem
   // 5) Areas Externas e Jardins Corporativos
   //
-  // Exemplo: 'assets/foto8.png'
-  // Deixe null para manter o fundo em gradiente (sem imagem).
+  // Cada posicao pode ser:
+  // - uma string com o caminho do arquivo (usa enquadramento padrao)
+  // - um objeto { src, position, size } para ajustar o enquadramento
+  // - null para manter o fundo em gradiente (sem imagem)
   const experienciaImages = [
-    'assets/central_de_residuos.png', // Central de Residuos
+    { src: 'assets/central_de_residuos.PNG', size: 'contain', position: 'right center' }, // Central de Residuos
     null, // Central de Cavacos
     null, // Fundicoes
     null, // Usinagem
@@ -119,8 +120,20 @@
   function applyExpImages() {
     const slides = document.querySelectorAll('#expCarouselTrack .hero-slide');
     slides.forEach((slide, i) => {
-      const src = experienciaImages[i];
-      if (src) slide.style.backgroundImage = `url('${src}')`;
+      const entry = experienciaImages[i];
+      if (!entry) return;
+
+      const isObj = typeof entry === 'object';
+      const src = isObj ? entry.src : entry;
+      const size = isObj && entry.size ? entry.size : 'cover';
+      const position = isObj && entry.position ? entry.position : 'center';
+
+      if (!src) return;
+
+      slide.style.backgroundImage = `url('${src}')`;
+      slide.style.backgroundSize = size;
+      slide.style.backgroundPosition = position;
+      slide.classList.add('has-photo');
     });
   }
 
