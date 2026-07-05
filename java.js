@@ -108,7 +108,7 @@
   // - null para manter o fundo em gradiente (sem imagem)
   const experienciaImages = [
     { src: 'assets/central_de_residuos.png', size: 'contain', position: 'right center' }, // Central de Residuos
-    null, // Central de Cavacos
+    { src: 'assets/central_de_cavacos.png', size: 'contain', position: 'center center' }, // Central de Cavacos
     null, // Fundicoes
     null, // Usinagem
     null  // Areas Externas e Jardins Corporativos
