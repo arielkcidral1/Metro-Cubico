@@ -133,6 +133,7 @@
       slide.style.backgroundImage = `url('${src}')`;
       slide.style.backgroundSize = size;
       slide.style.backgroundPosition = position;
+      slide.style.backgroundRepeat = 'no-repeat';
       slide.classList.add('has-photo');
     });
   }

@@ -97,7 +97,7 @@
     #experiencia .container{width:min(1620px,calc(100% - 40px))}
     .hero-frame{flex:1;width:100%;overflow:hidden;border-radius:36px;box-shadow:0 30px 80px rgba(0,10,25,.35);position:relative;background:linear-gradient(160deg,#0d1a33,#1a2f52 55%,#22335c)}
     .hero-track{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1)}
-    .hero-slide{flex:0 0 100%;height:680px;position:relative;display:flex;align-items:flex-end;background-size:cover;background-position:center;background-color:transparent}
+    .hero-slide{flex:0 0 100%;height:680px;position:relative;display:flex;align-items:flex-end;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:transparent}
     .hero-slide:before{content:'';position:absolute;inset:0;background:linear-gradient(100deg,rgba(6,14,30,.86) 0%,rgba(6,14,30,.5) 42%,rgba(6,14,30,.15) 62%,transparent 78%)}
     .hero-slide.has-photo{background-color:#0d1a33}
     .hero-slide.has-photo:before{background:
