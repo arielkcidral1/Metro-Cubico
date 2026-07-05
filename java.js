@@ -213,7 +213,8 @@
     if (!track) return;
 
     const maxIndex = getExpMaxIndex();
-    expIndex = Math.min(Math.max(expIndex, 0), maxIndex);
+    const total = maxIndex + 1;
+    expIndex = ((expIndex % total) + total) % total;
 
     const card = track.children[0];
     if (!card) return;
@@ -234,7 +235,8 @@
 
   window.expCarouselMove = function expCarouselMove(direction) {
     const maxIndex = getExpMaxIndex();
-    expIndex = Math.min(Math.max(expIndex + direction, 0), maxIndex);
+    const total = maxIndex + 1;
+    expIndex = ((expIndex + direction) % total + total) % total;
     updateExpCarousel();
   };
 
