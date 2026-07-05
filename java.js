@@ -91,27 +91,12 @@
     form.reset();
   };
 
-  // ==========================================================
-  // CARROSSEL DE EXPERIENCIA (estilo hero com vidro)
-  // ==========================================================
-  // Para definir a imagem de fundo de cada slide, preencha o
-  // array abaixo, na mesma ordem dos slides no HTML:
-  // 1) Central de Residuos
-  // 2) Central de Cavacos
-  // 3) Fundicoes
-  // 4) Usinagem
-  // 5) Areas Externas e Jardins Corporativos
-  //
-  // Cada posicao pode ser:
-  // - uma string com o caminho do arquivo (usa enquadramento padrao)
-  // - um objeto { src, position, size } para ajustar o enquadramento
-  // - null para manter o fundo em gradiente (sem imagem)
   const experienciaImages = [
-    { src: 'assets/central_de_residuos.png', size: 'contain', position: 'right center' }, // Central de Residuos
-    { src: 'assets/central_de_cavacos.png', size: 'contain', position: 'center center' }, // Central de Cavacos
-    null, // Fundicoes
-    null, // Usinagem
-    null  // Areas Externas e Jardins Corporativos
+    { src: 'assets/central_de_residuos.png', size: 'contain', position: 'right center' },
+    { src: 'assets/central_de_cavacos.png', size: 'contain', position: 'center center' },
+    null,
+    null,
+    null
   ];
 
   let expIndex = 0;
@@ -119,9 +104,14 @@
 
   function applyExpImages() {
     const slides = document.querySelectorAll('#expCarouselTrack .hero-slide');
+    console.log('🔍 Procurando slides:', slides.length);
+    
     slides.forEach((slide, i) => {
       const entry = experienciaImages[i];
-      if (!entry) return;
+      if (!entry) {
+        console.log(`Slide ${i}: sem imagem (null)`);
+        return;
+      }
 
       const isObj = typeof entry === 'object';
       const src = isObj ? entry.src : entry;
@@ -130,6 +120,7 @@
 
       if (!src) return;
 
+      console.log(`✅ Slide ${i}: tentando carregar ${src}`);
       slide.style.backgroundImage = `url('${src}')`;
       slide.style.backgroundSize = size;
       slide.style.backgroundPosition = position;
@@ -194,7 +185,11 @@
   }
 
   function setupExpCarousel() {
-    if (!document.getElementById('expCarouselTrack')) return;
+    if (!document.getElementById('expCarouselTrack')) {
+      console.warn('⚠️ #expCarouselTrack não encontrado!');
+      return;
+    }
+    console.log('🎠 Carrossel encontrado, aplicando imagens...');
     applyExpImages();
     renderExpDots();
     updateExpCarousel();
