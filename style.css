@@ -103,6 +103,14 @@
     .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.9);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;padding:8px 16px;border-radius:999px;margin-bottom:18px}
     .hero-glass h3{color:white;font-size:clamp(24px,2.6vw,32px);line-height:1.12;letter-spacing:-.03em;margin-bottom:12px}
     .hero-glass p{color:rgba(255,255,255,.82);font-size:15px;max-width:340px}
+    .hero-glass-lg{max-width:520px;max-height:calc(100% - 60px);overflow-y:auto}
+    .hero-glass-lg p{max-width:none;font-size:14px;margin-bottom:12px}
+    .hero-glass-lg p:last-child{margin-bottom:0}
+    .hero-list-mini{list-style:none;display:grid;gap:8px;margin:0 0 12px}
+    .hero-list-mini li{position:relative;padding-left:20px;color:rgba(255,255,255,.85);font-size:14px;line-height:1.4}
+    .hero-list-mini li:before{content:'✓';position:absolute;left:0;top:0;color:#99ccee;font-weight:900;font-size:13px}
+    .hero-glass-lg::-webkit-scrollbar{width:6px}
+    .hero-glass-lg::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:6px}
 
     .hero-arrow{flex:0 0 auto;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(20,32,58,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:white;font-size:24px;cursor:pointer;display:grid;place-items:center;box-shadow:0 14px 34px rgba(0,10,25,.22);transition:.25s ease;z-index:3}
     .hero-arrow:hover{background:rgba(0,64,111,.65);transform:scale(1.08)}
