@@ -28,7 +28,7 @@
     button,input,textarea,select{font:inherit}
 
     .container{width:min(1180px,calc(100% - 40px));margin-inline:auto}
-    .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;text-transform:uppercase;letter-spacing:.14em;font-weight:800;color:var(--blue-600);margin-bottom:18px}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;text-transform:uppercase;letter-spacing:.14em;font-weight:800;color:var(--blue-400);margin-bottom:18px}
     .eyebrow:before{content:'';width:28px;height:2px;background:var(--blue-500);display:inline-block}
     .title{font-family:var(--font-title);font-size:clamp(36px,5vw,64px);line-height:1.03;letter-spacing:-.04em;color:var(--black)}
     .title span{color:var(--blue-600)}
