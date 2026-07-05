@@ -94,7 +94,7 @@
     .service-body{padding:36px}.service-body h3{font-size:26px;letter-spacing:-.04em;color:var(--blue-900);margin-bottom:12px}.service-body p{color:var(--muted);font-size:16px}.service-body a{display:inline-block;margin-top:18px;font-weight:900;color:var(--blue-600)}
 
     .hero-carousel{position:relative;display:flex;align-items:center;gap:18px}
-    #experiencia .container{width:min(1840px,calc(100% - 40px))}
+    #experiencia .container{width:min(1620px,calc(100% - 40px))}
     .hero-frame{flex:1;width:100%;overflow:hidden;border-radius:36px;box-shadow:0 30px 80px rgba(0,10,25,.35);position:relative;background:linear-gradient(160deg,#0d1a33,#1a2f52 55%,#22335c)}
     .hero-track{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1)}
     .hero-slide{flex:0 0 100%;height:605px;position:relative;display:flex;align-items:flex-end;background-size:cover;background-position:center;background-color:transparent}
