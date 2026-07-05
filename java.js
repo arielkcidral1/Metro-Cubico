@@ -106,7 +106,7 @@
   // Exemplo: 'assets/foto8.png'
   // Deixe null para manter o fundo em gradiente (sem imagem).
   const experienciaImages = [
-    'assets/cenral_de_residuos.png', // Central de Residuos
+    'assets/central_de_residuos.png', // Central de Residuos
     null, // Central de Cavacos
     null, // Fundicoes
     null, // Usinagem
