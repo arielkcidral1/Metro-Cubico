@@ -91,8 +91,79 @@
     form.reset();
   };
 
+  // ==========================================================
+  // CARROSSEL DE IMAGENS - secao Experiencia
+  // ==========================================================
+  // Para adicionar as imagens de cada bloco, preencha o array
+  // correspondente abaixo com os caminhos dos arquivos, na ordem
+  // em que aparecem os cards na secao #experiencia:
+  // 1) Central de Residuos
+  // 2) Central de Cavacos
+  // 3) Fundicoes
+  // 4) Usinagem
+  // 5) Areas Externas e Jardins Corporativos
+  //
+  // Exemplo:
+  // [ 'assets/residuos-1.png', 'assets/residuos-2.png' ]
+  const experienciaImages = [
+    [], // Central de Residuos
+    [], // Central de Cavacos
+    [], // Fundicoes
+    [], // Usinagem
+    []  // Areas Externas e Jardins Corporativos
+  ];
+
+  function buildCarousel(carouselEl, images) {
+    const track = carouselEl.querySelector('.carousel-track');
+    const dotsWrap = carouselEl.querySelector('.carousel-dots');
+    if (!track || !images || !images.length) return;
+
+    track.innerHTML = images
+      .map((src) => `<div class="carousel-slide" style="background-image:url('${src}')"></div>`)
+      .join('');
+
+    dotsWrap.innerHTML = images
+      .map((_, i) => `<span class="${i === 0 ? 'active' : ''}" data-index="${i}"></span>`)
+      .join('');
+
+    carouselEl.dataset.index = '0';
+
+    dotsWrap.querySelectorAll('span').forEach((dot) => {
+      dot.addEventListener('click', () => {
+        goToSlide(carouselEl, parseInt(dot.dataset.index, 10));
+      });
+    });
+  }
+
+  function goToSlide(carouselEl, index) {
+    const track = carouselEl.querySelector('.carousel-track');
+    const slides = track.querySelectorAll('.carousel-slide');
+    const dots = carouselEl.querySelectorAll('.carousel-dots span');
+    if (!slides.length) return;
+
+    const total = slides.length;
+    const newIndex = (index + total) % total;
+
+    track.style.transform = `translateX(-${newIndex * 100}%)`;
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === newIndex));
+    carouselEl.dataset.index = String(newIndex);
+  }
+
+  window.carouselMove = function carouselMove(btn, direction) {
+    const carouselEl = btn.closest('[data-carousel]');
+    if (!carouselEl) return;
+    const current = parseInt(carouselEl.dataset.index || '0', 10);
+    goToSlide(carouselEl, current + direction);
+  };
+
+  function setupCarousels() {
+    const carousels = document.querySelectorAll('#experiencia [data-carousel]');
+    carousels.forEach((el, i) => buildCarousel(el, experienciaImages[i]));
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     setupRevealAnimations();
     setupPhoneMask();
+    setupCarousels();
   });
 })();
