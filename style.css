@@ -92,32 +92,25 @@
     .service-img-contain{height:380px;background-size:100% auto;background-repeat:no-repeat;background-position:center;background-color:var(--blue-950)}
     .service-img:after{content:'';position:absolute;inset:0;background:linear-gradient(transparent,rgba(0,0,0,.45))}
     .service-body{padding:36px}.service-body h3{font-size:26px;letter-spacing:-.04em;color:var(--blue-900);margin-bottom:12px}.service-body p{color:var(--muted);font-size:16px}.service-body a{display:inline-block;margin-top:18px;font-weight:900;color:var(--blue-600)}
-    #experiencia .service{min-height:220px;display:flex;flex-direction:column}
-    #experiencia .service-body{padding:28px}
-    #experiencia .service-body h3{font-size:23px}
-    #experiencia .service-body p{font-size:15px}
 
-    .exp-carousel{position:relative;display:flex;align-items:center;gap:14px}
-    .exp-carousel-viewport{overflow:hidden;flex:1;width:100%;border-radius:var(--radius)}
-    .exp-carousel-track{display:flex;flex-wrap:nowrap;gap:22px;transition:transform .45s ease}
-    .exp-carousel-track .service{flex:0 0 calc((100% - 44px)/3);min-width:0}
-    .exp-carousel-btn{flex:0 0 auto;width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:var(--blue-900);font-size:22px;cursor:pointer;display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,26,51,.14);transition:.25s ease;z-index:3}
-    .exp-carousel-btn:hover{background:rgba(0,64,111,.85);color:white;border-color:rgba(0,64,111,.85);transform:scale(1.08)}
-    .exp-carousel-dots{display:flex;justify-content:center;gap:10px;margin-top:26px;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.5);width:fit-content;margin-inline:auto;box-shadow:0 8px 24px rgba(0,26,51,.08)}
-    .exp-carousel-dots span{width:9px;height:9px;border-radius:50%;background:rgba(0,55,100,.25);cursor:pointer;transition:.25s ease}
-    .exp-carousel-dots span.active{background:var(--blue-600);width:24px;border-radius:6px}
+    .hero-carousel{position:relative;display:flex;align-items:center;gap:18px}
+    .hero-frame{flex:1;width:100%;overflow:hidden;border-radius:36px;box-shadow:0 30px 80px rgba(0,10,25,.35);position:relative;background:linear-gradient(160deg,#0d1a33,#1a2f52 55%,#22335c)}
+    .hero-track{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+    .hero-slide{flex:0 0 100%;aspect-ratio:16/8.2;position:relative;display:flex;align-items:center;background-size:cover;background-position:center;background-color:transparent}
+    .hero-slide:before{content:'';position:absolute;inset:0;background:linear-gradient(100deg,rgba(6,14,30,.86) 0%,rgba(6,14,30,.5) 42%,rgba(6,14,30,.15) 62%,transparent 78%)}
+    .hero-glass{position:relative;z-index:2;margin:0 6% 0 6%;max-width:440px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:26px;padding:34px 32px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 24px 60px rgba(0,10,25,.3)}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.9);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;padding:8px 16px;border-radius:999px;margin-bottom:20px}
+    .hero-glass h3{color:white;font-size:clamp(26px,3vw,34px);line-height:1.12;letter-spacing:-.03em;margin-bottom:14px}
+    .hero-glass p{color:rgba(255,255,255,.82);font-size:15px;max-width:340px}
 
-    .service-carousel{position:relative;height:220px;background:var(--blue-950);overflow:hidden}
-    .carousel-track{display:flex;height:100%;transition:transform .4s ease}
-    .carousel-track:empty:before{content:'Imagem em breve';position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.5);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
-    .carousel-slide{flex:0 0 100%;height:100%;background-size:cover;background-position:center}
-    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.22);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:white;font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:.25s ease;z-index:2;box-shadow:0 6px 18px rgba(0,0,0,.18)}
-    .carousel-btn:hover{background:rgba(255,255,255,.4);transform:translateY(-50%) scale(1.08)}
-    .carousel-prev{left:10px}.carousel-next{right:10px}
-    .service-carousel:not(:has(.carousel-slide)) .carousel-btn{display:none}
-    .carousel-dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:2;padding:6px 10px;width:fit-content;margin-inline:auto;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-    .carousel-dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.45);cursor:pointer;transition:.2s ease}
-    .carousel-dots span.active{background:white}
+    .hero-arrow{flex:0 0 auto;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(20,32,58,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:white;font-size:24px;cursor:pointer;display:grid;place-items:center;box-shadow:0 14px 34px rgba(0,10,25,.22);transition:.25s ease;z-index:3}
+    .hero-arrow:hover{background:rgba(0,64,111,.65);transform:scale(1.08)}
+
+    .hero-dots{display:flex;justify-content:center;gap:10px;margin-top:28px}
+    .hero-dots span{width:9px;height:9px;border-radius:50%;background:var(--line);cursor:pointer;transition:.25s ease}
+    .hero-dots span.active{background:var(--blue-600);width:26px;border-radius:6px}
+
+    @media(max-width:640px){.hero-carousel{gap:8px}.hero-arrow{width:40px;height:40px;font-size:18px}.hero-slide{aspect-ratio:9/13}.hero-glass{margin:0 5%;max-width:88%;padding:24px}.hero-glass h3{font-size:22px}}
 
     .about{background:white}.about-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:70px;align-items:center}.photo-stack{position:relative;min-height:560px}.photo-main,.photo-small{position:absolute;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background-size:cover;background-position:center}.photo-main{inset:0 80px 80px 0;background-image:url('assets/foto6.png')}.photo-small{right:0;bottom:0;width:56%;height:260px;border:8px solid white;background-image:url('assets/foto7.png')}.badge{position:absolute;top:40px;right:20px;background:var(--blue-600);color:white;border-radius:50%;width:126px;height:126px;display:grid;place-content:center;gap:4px;text-align:center;font-weight:900;line-height:1.05;box-shadow:0 18px 44px rgba(0,64,111,.36)}.badge span{display:block;width:100%;font-size:34px;line-height:1}.about-text p{color:var(--muted);margin-top:18px}.values{display:grid;gap:16px;margin-top:28px}.value{border:1px solid var(--line);border-radius:20px;padding:20px;background:var(--cream)}.value h4{color:var(--blue-800);margin-bottom:5px}
 
@@ -169,5 +162,5 @@
 
     .reveal{opacity:0;transform:translateY(28px);transition:.75s ease}.reveal.visible{opacity:1;transform:translateY(0)}
 
-    @media(max-width:980px){.nav-links,.nav-actions{display:none}.menu-btn{display:block}.hero-content,.about-grid,.quality-grid,.career-box,.contact-grid,.jobs-hero-grid{grid-template-columns:1fr}.hero-panel{display:none}.stats-card{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr 1fr}.exp-carousel-track .service{flex:0 0 calc((100% - 22px)/2)}.diff-grid{grid-template-columns:1fr 1fr}.segment-grid{grid-template-columns:repeat(3,1fr)}.portfolio-grid{grid-template-columns:1fr 1fr}.jobs-grid{grid-template-columns:1fr 1fr}.work:first-child{grid-row:auto}.testimonial-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.contact-info{position:static}.curriculo-sidebar{position:static;top:auto}.curriculo-back{margin-bottom:28px}.photo-stack{min-height:420px}}
-    @media(max-width:640px){.container{width:min(100% - 28px,1180px)}section{padding:78px 0}.hero{min-height:100vh;padding:146px 0 60px}.jobs-hero{padding:120px 0 60px}.hero-actions,.section-head{display:block}.btn{width:100%;margin-top:10px}.stats-card,.cards,.diff-grid,.segment-grid,.portfolio-grid,.portfolio-page-grid,.form-row,.footer-grid,.jobs-grid{grid-template-columns:1fr}.exp-carousel-track .service{flex:0 0 100%}.exp-carousel-btn{width:38px;height:38px;font-size:18px}.job-card .btn{align-self:stretch}.stat{border-right:0;border-bottom:1px solid var(--line)}.photo-stack{min-height:360px}.photo-main{inset:0 0 90px 0}.photo-small{width:74%;height:190px}.badge{width:100px;height:100px;right:4px}.quality-card{min-height:300px;padding:28px}.quality-card h3{font-size:26px}.contact-info,.form{padding:24px}.curriculo-back-btn{margin-top:0}}
+    @media(max-width:980px){.nav-links,.nav-actions{display:none}.menu-btn{display:block}.hero-content,.about-grid,.quality-grid,.career-box,.contact-grid,.jobs-hero-grid{grid-template-columns:1fr}.hero-panel{display:none}.stats-card{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr 1fr}.diff-grid{grid-template-columns:1fr 1fr}.segment-grid{grid-template-columns:repeat(3,1fr)}.portfolio-grid{grid-template-columns:1fr 1fr}.jobs-grid{grid-template-columns:1fr 1fr}.work:first-child{grid-row:auto}.testimonial-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.contact-info{position:static}.curriculo-sidebar{position:static;top:auto}.curriculo-back{margin-bottom:28px}.photo-stack{min-height:420px}}
+    @media(max-width:640px){.container{width:min(100% - 28px,1180px)}section{padding:78px 0}.hero{min-height:100vh;padding:146px 0 60px}.jobs-hero{padding:120px 0 60px}.hero-actions,.section-head{display:block}.btn{width:100%;margin-top:10px}.stats-card,.cards,.diff-grid,.segment-grid,.portfolio-grid,.portfolio-page-grid,.form-row,.footer-grid,.jobs-grid{grid-template-columns:1fr}.job-card .btn{align-self:stretch}.stat{border-right:0;border-bottom:1px solid var(--line)}.photo-stack{min-height:360px}.photo-main{inset:0 0 90px 0}.photo-small{width:74%;height:190px}.badge{width:100px;height:100px;right:4px}.quality-card{min-height:300px;padding:28px}.quality-card h3{font-size:26px}.contact-info,.form{padding:24px}.curriculo-back-btn{margin-top:0}}

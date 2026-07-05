@@ -92,111 +92,45 @@
   };
 
   // ==========================================================
-  // CARROSSEL DE IMAGENS - secao Experiencia
+  // CARROSSEL DE EXPERIENCIA (estilo hero com vidro)
   // ==========================================================
-  // Para adicionar as imagens de cada bloco, preencha o array
-  // correspondente abaixo com os caminhos dos arquivos, na ordem
-  // em que aparecem os cards na secao #experiencia:
+  // Para definir a imagem de fundo de cada slide, preencha o
+  // array abaixo com o caminho do arquivo, na mesma ordem dos
+  // slides no HTML:
   // 1) Central de Residuos
   // 2) Central de Cavacos
   // 3) Fundicoes
   // 4) Usinagem
   // 5) Areas Externas e Jardins Corporativos
   //
-  // Exemplo:
-  // [ 'assets/residuos-1.png', 'assets/residuos-2.png' ]
+  // Exemplo: 'assets/foto8.png'
+  // Deixe null para manter o fundo em gradiente (sem imagem).
   const experienciaImages = [
-    [], // Central de Residuos
-    [], // Central de Cavacos
-    [], // Fundicoes
-    [], // Usinagem
-    []  // Areas Externas e Jardins Corporativos
+    null, // Central de Residuos
+    null, // Central de Cavacos
+    null, // Fundicoes
+    null, // Usinagem
+    null  // Areas Externas e Jardins Corporativos
   ];
 
-  function buildCarousel(carouselEl, images) {
-    const track = carouselEl.querySelector('.carousel-track');
-    const dotsWrap = carouselEl.querySelector('.carousel-dots');
-    if (!track || !images || !images.length) return;
-
-    track.innerHTML = images
-      .map((src) => `<div class="carousel-slide" style="background-image:url('${src}')"></div>`)
-      .join('');
-
-    dotsWrap.innerHTML = images
-      .map((_, i) => `<span class="${i === 0 ? 'active' : ''}" data-index="${i}"></span>`)
-      .join('');
-
-    carouselEl.dataset.index = '0';
-
-    dotsWrap.querySelectorAll('span').forEach((dot) => {
-      dot.addEventListener('click', () => {
-        goToSlide(carouselEl, parseInt(dot.dataset.index, 10));
-      });
-    });
-  }
-
-  function goToSlide(carouselEl, index) {
-    const track = carouselEl.querySelector('.carousel-track');
-    const slides = track.querySelectorAll('.carousel-slide');
-    const dots = carouselEl.querySelectorAll('.carousel-dots span');
-    if (!slides.length) return;
-
-    const total = slides.length;
-    const newIndex = (index + total) % total;
-
-    track.style.transform = `translateX(-${newIndex * 100}%)`;
-    dots.forEach((dot, i) => dot.classList.toggle('active', i === newIndex));
-    carouselEl.dataset.index = String(newIndex);
-  }
-
-  window.carouselMove = function carouselMove(btn, direction) {
-    const carouselEl = btn.closest('[data-carousel]');
-    if (!carouselEl) return;
-    const current = parseInt(carouselEl.dataset.index || '0', 10);
-    goToSlide(carouselEl, current + direction);
-  };
-
-  function setupCarousels() {
-    const carousels = document.querySelectorAll('#experiencia [data-carousel]');
-    carousels.forEach((el, i) => buildCarousel(el, experienciaImages[i]));
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    setupRevealAnimations();
-    setupPhoneMask();
-    setupCarousels();
-    setupExpCarousel();
-  });
-
-  // ==========================================================
-  // CARROSSEL DE BLOCOS - secao Experiencia
-  // ==========================================================
   let expIndex = 0;
+  let expAutoplayTimer = null;
 
-  function getExpVisibleCount() {
-    if (window.innerWidth <= 640) return 1;
-    if (window.innerWidth <= 980) return 2;
-    return 3;
-  }
-
-  function getExpTotal() {
-    const track = document.getElementById('expCarouselTrack');
-    return track ? track.children.length : 0;
-  }
-
-  function getExpMaxIndex() {
-    const total = getExpTotal();
-    const visible = getExpVisibleCount();
-    return Math.max(0, total - visible);
+  function applyExpImages() {
+    const slides = document.querySelectorAll('#expCarouselTrack .hero-slide');
+    slides.forEach((slide, i) => {
+      const src = experienciaImages[i];
+      if (src) slide.style.backgroundImage = `url('${src}')`;
+    });
   }
 
   function renderExpDots() {
     const dotsWrap = document.getElementById('expCarouselDots');
-    if (!dotsWrap) return;
-    const maxIndex = getExpMaxIndex();
-    const count = maxIndex + 1;
+    const track = document.getElementById('expCarouselTrack');
+    if (!dotsWrap || !track) return;
+    const total = track.children.length;
 
-    dotsWrap.innerHTML = Array.from({ length: count })
+    dotsWrap.innerHTML = Array.from({ length: total })
       .map((_, i) => `<span class="${i === expIndex ? 'active' : ''}" data-index="${i}"></span>`)
       .join('');
 
@@ -212,18 +146,10 @@
     const track = document.getElementById('expCarouselTrack');
     if (!track) return;
 
-    const maxIndex = getExpMaxIndex();
-    const total = maxIndex + 1;
+    const total = track.children.length;
     expIndex = ((expIndex % total) + total) % total;
 
-    const card = track.children[0];
-    if (!card) return;
-
-    const cardWidth = card.getBoundingClientRect().width;
-    const gap = parseFloat(getComputedStyle(track).gap || '22');
-    const offset = expIndex * (cardWidth + gap);
-
-    track.style.transform = `translateX(-${offset}px)`;
+    track.style.transform = `translateX(-${expIndex * 100}%)`;
 
     const dotsWrap = document.getElementById('expCarouselDots');
     if (dotsWrap) {
@@ -234,24 +160,36 @@
   }
 
   window.expCarouselMove = function expCarouselMove(direction) {
-    const maxIndex = getExpMaxIndex();
-    const total = maxIndex + 1;
+    const track = document.getElementById('expCarouselTrack');
+    if (!track) return;
+    const total = track.children.length;
     expIndex = ((expIndex + direction) % total + total) % total;
     updateExpCarousel();
+    restartExpAutoplay();
   };
+
+  function restartExpAutoplay() {
+    if (expAutoplayTimer) clearInterval(expAutoplayTimer);
+    expAutoplayTimer = setInterval(() => {
+      const track = document.getElementById('expCarouselTrack');
+      if (!track) return;
+      const total = track.children.length;
+      expIndex = (expIndex + 1) % total;
+      updateExpCarousel();
+    }, 6000);
+  }
 
   function setupExpCarousel() {
     if (!document.getElementById('expCarouselTrack')) return;
+    applyExpImages();
     renderExpDots();
     updateExpCarousel();
-
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        renderExpDots();
-        updateExpCarousel();
-      }, 150);
-    });
+    restartExpAutoplay();
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupRevealAnimations();
+    setupPhoneMask();
+    setupExpCarousel();
+  });
 })();
