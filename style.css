@@ -63,7 +63,7 @@
     header .btn-outline{color:white;border-color:var(--blue-600);background:var(--blue-600);backdrop-filter:none;box-shadow:0 12px 28px rgba(0,64,111,.24);padding:13px 24px;white-space:nowrap;min-width:max-content}
     header .btn-outline:hover{background:var(--blue-800);border-color:var(--blue-800);color:white;transform:translateY(-2px)}
 
-    .hero{min-height:130vh;position:relative;display:grid;align-items:start;padding:170px 0 50px;color:white;background-color:var(--blue-600);background-image:linear-gradient(110deg,rgba(172,192,211,.42),rgba(0,26,51,.24),rgba(154,177,199,.38)),url('Foto Hero.png');background-size:cover,contain;background-position:center,center 62%;background-repeat:no-repeat;overflow:hidden}
+    .hero{min-height:130vh;position:relative;display:grid;align-items:start;padding:170px 0 50px;color:white;background-color:var(--blue-600);background-image:linear-gradient(110deg,rgba(172,192,211,.42),rgba(0,26,51,.24),rgba(154,177,199,.38)),url('Foto Hero.png');background-size:cover,cover;background-position:center,center 30%;background-repeat:no-repeat;overflow:hidden}
     .hero:after{content:'';position:absolute;inset:auto 0 0;height:180px;background:linear-gradient(transparent,var(--cream));pointer-events:none}
     .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:76px 76px;mask-image:linear-gradient(90deg,black,transparent)}
     .hero-content{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:34px;align-items:start}
