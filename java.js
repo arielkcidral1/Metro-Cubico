@@ -77,13 +77,13 @@
     const mensagem = data.get('mensagem') || '';
 
     const text = [
-      'Ola! Gostaria de solicitar um orcamento.',
+      'Olá! Gostaria de solicitar um orçamento.',
       '',
       `Nome: ${nome}`,
       `Empresa: ${empresa}`,
       `Telefone: ${telefone}`,
       `E-mail: ${email}`,
-      `Servico: ${servico}`,
+      `Serviço: ${servico}`,
       `Mensagem: ${mensagem}`
     ].join('\n');
 
