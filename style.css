@@ -104,7 +104,7 @@
     .hero-slide.has-photo:before{background:
       linear-gradient(0deg,rgba(6,14,30,.82) 0%,rgba(6,14,30,.35) 30%,transparent 55%),
       linear-gradient(100deg,rgba(6,14,30,.94) 0%,rgba(6,14,30,.62) 38%,rgba(6,14,30,.18) 60%,transparent 76%)}
-    .hero-glass{position:relative;z-index:3;margin:0 0 6% 5%;max-width:420px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:26px;padding:30px 30px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 24px 60px rgba(0,10,25,.3)}
+    .hero-glass{position:relative;z-index:3;margin:0 0 6% 5%;max-width:420px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:26px;padding:30px 30px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 24px 60px rgba(0,10,25,.3);transform:translateZ(0);-webkit-transform:translateZ(0);will-change:transform}
     .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.9);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;padding:8px 16px;border-radius:999px;margin-bottom:18px}
     .hero-glass h3{color:white;font-size:clamp(24px,2.6vw,32px);line-height:1.12;letter-spacing:-.03em;margin-bottom:12px}
     .hero-glass p{color:rgba(255,255,255,.82);font-size:15px;max-width:340px}
